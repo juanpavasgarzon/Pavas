@@ -15,7 +15,7 @@ services:
     image: postgres:latest
     container_name: postgres
     environment:
-      - POSTGRES_DB=clean-architecture
+      - POSTGRES_DB=pavas
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     volumes:
