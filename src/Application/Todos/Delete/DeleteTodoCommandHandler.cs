@@ -7,8 +7,10 @@ using SharedKernel;
 
 namespace Application.Todos.Delete;
 
-internal sealed class DeleteTodoCommandHandler(IApplicationDbContext context, IUserContext userContext)
-    : ICommandHandler<DeleteTodoCommand>
+internal sealed class DeleteTodoCommandHandler(
+    IApplicationDbContext context,
+    IUserContext userContext
+) : ICommandHandler<DeleteTodoCommand>
 {
     public async Task<Result> Handle(DeleteTodoCommand command, CancellationToken cancellationToken)
     {
@@ -21,8 +23,6 @@ internal sealed class DeleteTodoCommandHandler(IApplicationDbContext context, IU
         }
 
         context.TodoItems.Remove(todoItem);
-
-        todoItem.Raise(new TodoItemDeletedDomainEvent(todoItem.Id));
 
         await context.SaveChangesAsync(cancellationToken);
 

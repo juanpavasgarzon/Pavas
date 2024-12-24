@@ -1,4 +1,5 @@
 ﻿using Application.Abstractions.Data;
+using Domain.Products;
 using Domain.Todos;
 using Domain.Users;
 using MediatR;
@@ -12,9 +13,11 @@ public sealed class ApplicationDbContext(
     IPublisher publisher
 ) : DbContext(options), IApplicationDbContext
 {
-    public DbSet<User> Users { get; set; }
+    public DbSet<User> Users { get; init; }
 
-    public DbSet<TodoItem> TodoItems { get; set; }
+    public DbSet<TodoItem> TodoItems { get; init; }
+
+    public DbSet<Product> Products { get; init; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

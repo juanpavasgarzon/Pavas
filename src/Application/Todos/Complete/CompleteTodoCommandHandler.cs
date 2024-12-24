@@ -31,8 +31,6 @@ internal sealed class CompleteTodoCommandHandler(
         todoItem.IsCompleted = true;
         todoItem.CompletedAt = dateTimeProvider.UtcNow;
 
-        todoItem.Raise(new TodoItemCompletedDomainEvent(todoItem.Id));
-
         await context.SaveChangesAsync(cancellationToken);
 
         return Result.Success();
