@@ -2,7 +2,7 @@ using FluentValidation;
 
 namespace Application.Products.Create;
 
-public class CreateProductCommandValidator : AbstractValidator<CreateProductCommand>
+internal class CreateProductCommandValidator : AbstractValidator<CreateProductCommand>
 {
     public CreateProductCommandValidator()
     {

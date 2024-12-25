@@ -1,0 +1,10 @@
+# Ensure all text files use LF line endings
+* text=auto
+
+# Explicitly set line endings for certain types of files
+*.cs text eol=lf
+*.json text eol=lf
+*.sh text eol=lf
+*.md text eol=lf
+*.yml text eol=lf
+
