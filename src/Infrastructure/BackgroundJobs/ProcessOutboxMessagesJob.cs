@@ -9,7 +9,7 @@ using SharedKernel;
 namespace Infrastructure.BackgroundJobs;
 
 [DisallowConcurrentExecution]
-public class ProcessOutboxMessagesJob(
+internal sealed class ProcessOutboxMessagesJob(
     ApplicationDbContext applicationDbContext,
     IPublisher publisher,
     IDateTimeProvider dateTimeProvider

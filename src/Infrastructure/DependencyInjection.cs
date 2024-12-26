@@ -26,8 +26,8 @@ public static class DependencyInjection
         return services
             .AddDatabase(configuration)
             .AddServices()
-            .AddInterceptors()
-            .AddJobs()
+            .AddInterceptorsInternal()
+            .AddJobsInternal()
             .AddHealthChecks(configuration)
             .AddAuthenticationInternal(configuration)
             .AddAuthorizationInternal();
@@ -40,7 +40,7 @@ public static class DependencyInjection
         return services;
     }
 
-    private static IServiceCollection AddJobs(this IServiceCollection services)
+    private static IServiceCollection AddJobsInternal(this IServiceCollection services)
     {
         services.AddQuartz(configurator =>
         {
@@ -55,7 +55,7 @@ public static class DependencyInjection
         return services;
     }
 
-    private static IServiceCollection AddInterceptors(this IServiceCollection services)
+    private static IServiceCollection AddInterceptorsInternal(this IServiceCollection services)
     {
         services.AddSingleton<DomainEventsToOutboxMessageInterceptor>();
 

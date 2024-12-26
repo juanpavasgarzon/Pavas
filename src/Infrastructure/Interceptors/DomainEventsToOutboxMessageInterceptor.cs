@@ -6,7 +6,7 @@ using SharedKernel;
 
 namespace Infrastructure.Interceptors;
 
-public sealed class DomainEventsToOutboxMessageInterceptor : SaveChangesInterceptor
+internal sealed class DomainEventsToOutboxMessageInterceptor : SaveChangesInterceptor
 {
     public override ValueTask<InterceptionResult<int>> SavingChangesAsync(
         DbContextEventData eventData,
