@@ -15,16 +15,20 @@ public class ProcessOutboxMessagesJob(
     IDateTimeProvider dateTimeProvider
 ) : IJob
 {
+    private readonly JsonSerializerSettings _settings = new() { TypeNameHandling = TypeNameHandling.All };
+
     public async Task Execute(IJobExecutionContext context)
     {
         List<OutboxMessage> outboxMessages = await applicationDbContext.OutboxMessages
             .Where(message => message.ProcessedOnUtc == null)
+            .OrderBy(message => message.OccurredOnUtc)
             .Take(20)
             .ToListAsync();
 
         foreach (OutboxMessage outboxMessage in outboxMessages)
         {
-            IDomainEvent? domainEvent = JsonConvert.DeserializeObject<IDomainEvent>(outboxMessage.Content);
+            IDomainEvent? domainEvent = JsonConvert.DeserializeObject<IDomainEvent>(outboxMessage.Content, _settings);
+
             if (domainEvent is null)
             {
                 continue;
