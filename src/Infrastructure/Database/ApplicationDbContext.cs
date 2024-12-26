@@ -19,7 +19,7 @@ public sealed class ApplicationDbContext(
     DbContextOptions<ApplicationDbContext> options
 ) : DbContext(options), IApplicationDbContext
 {
-    public DbSet<OutboxMessage> OutboxMessages { get; set; }
+    public DbSet<OutboxMessage> OutboxMessages { get; init; }
     public DbSet<User> Users { get; init; }
     public DbSet<TodoItem> TodoItems { get; init; }
     public DbSet<Product> Products { get; init; }

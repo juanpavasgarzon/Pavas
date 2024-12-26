@@ -17,7 +17,7 @@ public class ProcessOutboxMessagesJob(
 {
     public async Task Execute(IJobExecutionContext context)
     {
-        List<OutboxMessage> outboxMessages = await applicationDbContext.Set<OutboxMessage>()
+        List<OutboxMessage> outboxMessages = await applicationDbContext.OutboxMessages
             .Where(message => message.ProcessedOnUtc == null)
             .Take(20)
             .ToListAsync();
