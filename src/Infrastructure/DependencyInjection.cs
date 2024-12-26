@@ -3,7 +3,9 @@ using Application.Abstractions.Authentication;
 using Application.Abstractions.Data;
 using Infrastructure.Authentication;
 using Infrastructure.Authorization;
+using Infrastructure.BackgroundJobs;
 using Infrastructure.Database;
+using Infrastructure.Interceptors;
 using Infrastructure.Time;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -12,6 +14,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Quartz;
 using SharedKernel;
 
 namespace Infrastructure;
@@ -21,8 +24,10 @@ public static class DependencyInjection
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         return services
-            .AddServices()
             .AddDatabase(configuration)
+            .AddServices()
+            .AddInterceptors()
+            .AddJobs()
             .AddHealthChecks(configuration)
             .AddAuthenticationInternal(configuration)
             .AddAuthorizationInternal();
@@ -35,15 +40,42 @@ public static class DependencyInjection
         return services;
     }
 
+    private static IServiceCollection AddJobs(this IServiceCollection services)
+    {
+        services.AddQuartz(configurator =>
+        {
+            var outboxJobKey = new JobKey(nameof(ProcessOutboxMessagesJob));
+
+            configurator.AddJob<ProcessOutboxMessagesJob>(outboxJobKey)
+                .AddTrigger(trigger => trigger.ForJob(outboxJobKey).WithSimpleSchedule(schedule => schedule.WithIntervalInSeconds(10).RepeatForever()));
+        });
+
+        services.AddQuartzHostedService();
+
+        return services;
+    }
+
+    private static IServiceCollection AddInterceptors(this IServiceCollection services)
+    {
+        services.AddSingleton<DomainEventsToOutboxMessageInterceptor>();
+
+        return services;
+    }
+
     private static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configuration)
     {
         string? connectionString = configuration.GetConnectionString("Database");
 
-        services.AddDbContext<ApplicationDbContext>(
-            options => options
-                .UseNpgsql(connectionString, npgsqlOptions =>
+        services.AddDbContext<ApplicationDbContext>((sp, options) =>
+        {
+            DomainEventsToOutboxMessageInterceptor domainEventsToOutboxMessageInterceptor = sp
+                .GetRequiredService<DomainEventsToOutboxMessageInterceptor>();
+
+            options.UseNpgsql(connectionString, npgsqlOptions =>
                     npgsqlOptions.MigrationsHistoryTable(HistoryRepository.DefaultTableName, Schemas.Default))
-                .UseSnakeCaseNamingConvention());
+                .AddInterceptors(domainEventsToOutboxMessageInterceptor)
+                .UseSnakeCaseNamingConvention();
+        });
 
         services.AddScoped<IApplicationDbContext>(sp => sp.GetRequiredService<ApplicationDbContext>());
 

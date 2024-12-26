@@ -7,6 +7,8 @@
     <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="9.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.2" />
+    <PackageReference Include="Quartz" Version="3.13.1" />
+    <PackageReference Include="Quartz.Extensions.Hosting" Version="3.13.1" />
   </ItemGroup>
 
   <ItemGroup>
