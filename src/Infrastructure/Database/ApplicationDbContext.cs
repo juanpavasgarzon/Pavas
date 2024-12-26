@@ -1,5 +1,11 @@
 ﻿using Application.Abstractions.Data;
+using Domain.Customers;
+using Domain.Invoices;
+using Domain.Orders;
 using Domain.Products;
+using Domain.Purchases;
+using Domain.Quotations;
+using Domain.Suppliers;
 using Domain.Todos;
 using Domain.Users;
 using MediatR;
@@ -14,10 +20,14 @@ public sealed class ApplicationDbContext(
 ) : DbContext(options), IApplicationDbContext
 {
     public DbSet<User> Users { get; init; }
-
     public DbSet<TodoItem> TodoItems { get; init; }
-
     public DbSet<Product> Products { get; init; }
+    public DbSet<Supplier> Suppliers { get; init; }
+    public DbSet<Customer> Customers { get; init; }
+    public DbSet<Order> Orders { get; init; }
+    public DbSet<Purchase> Purchases { get; init; }
+    public DbSet<Quotation> Quotations { get; init; }
+    public DbSet<Invoice> Invoices { get; init; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -24,4 +24,13 @@
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Endpoints\Customers\" />
+    <Folder Include="Endpoints\Invoices\" />
+    <Folder Include="Endpoints\Orders\" />
+    <Folder Include="Endpoints\Purchases\" />
+    <Folder Include="Endpoints\Quotations\" />
+    <Folder Include="Endpoints\Suppliers\" />
+  </ItemGroup>
+
 </Project>
