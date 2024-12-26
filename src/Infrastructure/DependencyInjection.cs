@@ -1,11 +1,13 @@
 ﻿using System.Text;
 using Application.Abstractions.Authentication;
 using Application.Abstractions.Data;
+using Application.Abstractions.Mail;
 using Infrastructure.Authentication;
 using Infrastructure.Authorization;
 using Infrastructure.BackgroundJobs;
 using Infrastructure.Database;
 using Infrastructure.Interceptors;
+using Infrastructure.Mail;
 using Infrastructure.Time;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -36,6 +38,7 @@ public static class DependencyInjection
     private static IServiceCollection AddServices(this IServiceCollection services)
     {
         services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
+        services.AddSingleton<IMailSender, MailSender>();
 
         return services;
     }
