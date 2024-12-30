@@ -6,8 +6,7 @@ services:
       context: .
       dockerfile: src/Web.Api/Dockerfile
     ports:
-      - "5000:8080"
-      - "5001:8081"
+      - "5010:8080"
 
   postgres:
     image: postgres:latest

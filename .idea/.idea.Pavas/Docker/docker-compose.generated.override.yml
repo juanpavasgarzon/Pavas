@@ -1,0 +1,21 @@
+# This is a generated file. Not intended for manual editing.
+services:
+  web-api:
+    build:
+      context: "/Users/pavas/Documents/Repo/Pavas"
+      dockerfile: "src/Web.Api/Dockerfile"
+      target: "base"
+    command: []
+    entrypoint:
+    - "dotnet"
+    - "/app/bin/Debug/net9.0/Web.Api.dll"
+    environment:
+      DOTNET_USE_POLLING_FILE_WATCHER: "true"
+    image: "webapi:dev"
+    ports: []
+    volumes:
+    - "/Users/pavas/.microsoft/usersecrets:/home/app/.microsoft/usersecrets"
+    - "/Users/pavas/.nuget/packages:/home/app/.nuget/packages"
+    - "/Users/pavas/Documents/Repo/Pavas/src/Web.Api:/app:rw"
+    - "/Users/pavas/Documents/Repo/Pavas:/src:rw"
+    working_dir: "/app"
