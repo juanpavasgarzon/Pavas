@@ -1,4 +1,4 @@
-using Infrastructure.Outbox;
+using Domain.Outbox;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;

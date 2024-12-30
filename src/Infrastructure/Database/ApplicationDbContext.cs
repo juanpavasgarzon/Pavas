@@ -2,13 +2,13 @@
 using Domain.Customers;
 using Domain.Invoices;
 using Domain.Orders;
+using Domain.Outbox;
 using Domain.Products;
 using Domain.Purchases;
 using Domain.Quotations;
 using Domain.Suppliers;
 using Domain.Todos;
 using Domain.Users;
-using Infrastructure.Outbox;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SharedKernel;

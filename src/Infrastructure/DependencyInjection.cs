@@ -4,6 +4,7 @@ using Application.Abstractions.Data;
 using Application.Abstractions.Mail;
 using Infrastructure.Authentication;
 using Infrastructure.Authorization;
+using Infrastructure.BackgroundJobs;
 using Infrastructure.Database;
 using Infrastructure.Interceptors;
 using Infrastructure.Mail;
@@ -18,6 +19,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Infrastructure;
+using Quartz;
 using SharedKernel;
 
 namespace Infrastructure;
@@ -29,6 +31,8 @@ public static class DependencyInjection
         services.AddDatabase(configuration);
 
         services.AddServices();
+
+        services.AddJobs();
 
         services.AddInterceptorsInternal();
 
@@ -44,6 +48,21 @@ public static class DependencyInjection
         services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
 
         services.AddSingleton<IMailSender, MailSender>();
+    }
+
+    private static void AddJobs(this IServiceCollection services)
+    {
+        services.AddQuartz(configurator =>
+        {
+            var outboxJobKey = new JobKey(nameof(ProcessOutboxMessagesJob));
+
+            configurator.AddJob<ProcessOutboxMessagesJob>(outboxJobKey);
+
+            configurator.AddTrigger(trigger => trigger.ForJob(outboxJobKey)
+                .WithSimpleSchedule(schedule => schedule.WithIntervalInSeconds(10).RepeatForever()));
+        });
+
+        services.AddQuartzHostedService();
     }
 
     private static void AddInterceptorsInternal(this IServiceCollection services)

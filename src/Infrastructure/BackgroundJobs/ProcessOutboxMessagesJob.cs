@@ -1,5 +1,5 @@
-using Infrastructure.Database;
-using Infrastructure.Outbox;
+using Application.Abstractions.Data;
+using Domain.Outbox;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
@@ -10,7 +10,7 @@ namespace Infrastructure.BackgroundJobs;
 
 [DisallowConcurrentExecution]
 public sealed class ProcessOutboxMessagesJob(
-    ApplicationDbContext applicationDbContext,
+    IApplicationDbContext applicationDbContext,
     IPublisher publisher,
     IDateTimeProvider dateTimeProvider
 ) : IJob

@@ -1,6 +1,4 @@
-﻿using Infrastructure.BackgroundJobs;
-using Infrastructure.Settings;
-using Quartz;
+﻿using Infrastructure.Settings;
 using Web.Api.Extensions;
 using Web.Api.Infrastructure;
 
@@ -18,24 +16,7 @@ public static class DependencyInjection
 
         services.AddProblemDetails();
 
-        services.AddJobs();
-
         services.AddSettings();
-    }
-
-    private static void AddJobs(this IServiceCollection services)
-    {
-        services.AddQuartz(configurator =>
-        {
-            var outboxJobKey = new JobKey(nameof(ProcessOutboxMessagesJob));
-
-            configurator.AddJob<ProcessOutboxMessagesJob>(outboxJobKey);
-
-            configurator.AddTrigger(trigger => trigger.ForJob(outboxJobKey)
-                .WithSimpleSchedule(schedule => schedule.WithIntervalInSeconds(10).RepeatForever()));
-        });
-
-        services.AddQuartzHostedService();
     }
 
     private static void AddSettings(this IServiceCollection services)

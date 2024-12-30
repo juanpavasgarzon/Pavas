@@ -1,6 +1,7 @@
 ﻿using Domain.Customers;
 using Domain.Invoices;
 using Domain.Orders;
+using Domain.Outbox;
 using Domain.Products;
 using Domain.Purchases;
 using Domain.Quotations;
@@ -13,6 +14,7 @@ namespace Application.Abstractions.Data;
 
 public interface IApplicationDbContext
 {
+    DbSet<OutboxMessage> OutboxMessages { get; init; }
     DbSet<User> Users { get; }
     DbSet<TodoItem> TodoItems { get; }
     DbSet<Product> Products { get; }
@@ -23,5 +25,6 @@ public interface IApplicationDbContext
     DbSet<Quotation> Quotations { get; }
     DbSet<Invoice> Invoices { get; }
 
+    DbSet<TEntity> Set<TEntity>() where TEntity : class;
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }
