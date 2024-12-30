@@ -4,10 +4,10 @@ using Application.Abstractions.Data;
 using Application.Abstractions.Mail;
 using Infrastructure.Authentication;
 using Infrastructure.Authorization;
-using Infrastructure.BackgroundJobs;
 using Infrastructure.Database;
 using Infrastructure.Interceptors;
 using Infrastructure.Mail;
+using Infrastructure.Settings;
 using Infrastructure.Time;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -15,110 +15,105 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using Quartz;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Infrastructure;
 using SharedKernel;
 
 namespace Infrastructure;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
+    public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
-        return services
-            .AddDatabase(configuration)
-            .AddServices()
-            .AddInterceptorsInternal()
-            .AddJobsInternal()
-            .AddHealthChecks(configuration)
-            .AddAuthenticationInternal(configuration)
-            .AddAuthorizationInternal();
+        services.AddDatabase(configuration);
+
+        services.AddServices();
+
+        services.AddInterceptorsInternal();
+
+        services.AddHealthChecks(configuration);
+
+        services.AddAuthenticationInternal();
+
+        services.AddAuthorizationInternal();
     }
 
-    private static IServiceCollection AddServices(this IServiceCollection services)
+    private static void AddServices(this IServiceCollection services)
     {
         services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
+
         services.AddSingleton<IMailSender, MailSender>();
-
-        return services;
     }
 
-    private static IServiceCollection AddJobsInternal(this IServiceCollection services)
+    private static void AddInterceptorsInternal(this IServiceCollection services)
     {
-        services.AddQuartz(configurator =>
-        {
-            var outboxJobKey = new JobKey(nameof(ProcessOutboxMessagesJob));
-
-            configurator.AddJob<ProcessOutboxMessagesJob>(outboxJobKey)
-                .AddTrigger(trigger => trigger.ForJob(outboxJobKey).WithSimpleSchedule(schedule => schedule.WithIntervalInSeconds(10).RepeatForever()));
-        });
-
-        services.AddQuartzHostedService();
-
-        return services;
+        services.AddSingleton<OutboxMessageInterceptor>();
     }
 
-    private static IServiceCollection AddInterceptorsInternal(this IServiceCollection services)
-    {
-        services.AddSingleton<DomainEventsToOutboxMessageInterceptor>();
-
-        return services;
-    }
-
-    private static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configuration)
+    private static void AddDatabase(this IServiceCollection services, IConfiguration configuration)
     {
         string? connectionString = configuration.GetConnectionString("Database");
 
-        services.AddDbContext<ApplicationDbContext>((sp, options) =>
+        services.AddDbContext<ApplicationDbContext>((serviceProvider, options) =>
         {
-            DomainEventsToOutboxMessageInterceptor domainEventsToOutboxMessageInterceptor = sp
-                .GetRequiredService<DomainEventsToOutboxMessageInterceptor>();
+            OutboxMessageInterceptor outbox = serviceProvider.GetRequiredService<OutboxMessageInterceptor>();
 
-            options.UseNpgsql(connectionString, npgsqlOptions =>
-                    npgsqlOptions.MigrationsHistoryTable(HistoryRepository.DefaultTableName, Schemas.Default))
-                .AddInterceptors(domainEventsToOutboxMessageInterceptor)
-                .UseSnakeCaseNamingConvention();
+            options.UseNpgsql(connectionString, ConfigureMigrations);
+
+            options.AddInterceptors(outbox);
+
+            options.UseSnakeCaseNamingConvention();
         });
 
-        services.AddScoped<IApplicationDbContext>(sp => sp.GetRequiredService<ApplicationDbContext>());
-
-        return services;
+        services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
     }
 
-    private static IServiceCollection AddHealthChecks(this IServiceCollection services, IConfiguration configuration)
+    private static void ConfigureMigrations(NpgsqlDbContextOptionsBuilder npgsqlOptions)
     {
-        services
-            .AddHealthChecks()
-            .AddNpgSql(configuration.GetConnectionString("Database")!);
-
-        return services;
+        npgsqlOptions.MigrationsHistoryTable(HistoryRepository.DefaultTableName, Schemas.Default);
     }
 
-    private static IServiceCollection AddAuthenticationInternal(this IServiceCollection services,
-        IConfiguration configuration)
+    private static void AddHealthChecks(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(o =>
+        string? connectionString = configuration.GetConnectionString("Database");
+
+        services.AddHealthChecks().AddNpgSql(connectionString!);
+    }
+
+    private static void AddAuthenticationInternal(this IServiceCollection services)
+    {
+        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+        {
+            IServiceScope serviceScope = services.BuildServiceProvider().CreateScope();
+
+            IServiceProvider serviceProvider = serviceScope.ServiceProvider;
+
+            IOptions<JwtSettings> jwtOptions = serviceProvider.GetRequiredService<IOptions<JwtSettings>>();
+
+            JwtSettings jwtSettings = jwtOptions.Value;
+
+            options.RequireHttpsMetadata = false;
+
+            options.TokenValidationParameters = new TokenValidationParameters
             {
-                o.RequireHttpsMetadata = false;
-                o.TokenValidationParameters = new TokenValidationParameters
-                {
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Secret"]!)),
-                    ValidIssuer = configuration["Jwt:Issuer"],
-                    ValidAudience = configuration["Jwt:Audience"],
-                    ClockSkew = TimeSpan.Zero
-                };
-            });
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret)),
+                ValidIssuer = jwtSettings.Issuer,
+                ValidAudience = jwtSettings.Audience,
+                ClockSkew = TimeSpan.Zero
+            };
+        });
 
         services.AddHttpContextAccessor();
-        services.AddScoped<IUserContext, UserContext>();
-        services.AddSingleton<IPasswordHasher, PasswordHasher>();
-        services.AddSingleton<ITokenProvider, TokenProvider>();
 
-        return services;
+        services.AddScoped<IUserContext, UserContext>();
+
+        services.AddSingleton<IPasswordHasher, PasswordHasher>();
+
+        services.AddSingleton<ITokenProvider, TokenProvider>();
     }
 
-    private static IServiceCollection AddAuthorizationInternal(this IServiceCollection services)
+    private static void AddAuthorizationInternal(this IServiceCollection services)
     {
         services.AddAuthorization();
 
@@ -127,7 +122,5 @@ public static class DependencyInjection
         services.AddTransient<IAuthorizationHandler, PermissionAuthorizationHandler>();
 
         services.AddTransient<IAuthorizationPolicyProvider, PermissionAuthorizationPolicyProvider>();
-
-        return services;
     }
 }

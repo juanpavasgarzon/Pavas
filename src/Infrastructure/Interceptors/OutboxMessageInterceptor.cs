@@ -1,12 +1,13 @@
 using Infrastructure.Outbox;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using SharedKernel;
 
 namespace Infrastructure.Interceptors;
 
-internal sealed class DomainEventsToOutboxMessageInterceptor : SaveChangesInterceptor
+internal sealed class OutboxMessageInterceptor : SaveChangesInterceptor
 {
     public override ValueTask<InterceptionResult<int>> SavingChangesAsync(
         DbContextEventData eventData,

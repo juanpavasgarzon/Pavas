@@ -6,7 +6,7 @@ using Web.Api.Infrastructure;
 
 namespace Web.Api.Endpoints.Products;
 
-public class GetByCode : IEndpoint
+internal sealed class GetByCode : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {

@@ -3,9 +3,9 @@ using Microsoft.OpenApi.Models;
 
 namespace Web.Api.Extensions;
 
-internal static class ServiceCollectionExtensions
+internal static class SwaggerExtensions
 {
-    internal static IServiceCollection AddSwaggerGenWithAuth(this IServiceCollection services)
+    internal static void AddSwaggerGenWithAuth(this IServiceCollection services)
     {
         services.AddSwaggerGen(o =>
         {
@@ -40,7 +40,5 @@ internal static class ServiceCollectionExtensions
 
             o.AddSecurityRequirement(securityRequirement);
         });
-
-        return services;
     }
 }

@@ -30,6 +30,6 @@ internal sealed class GetUserByEmailQueryHandler(
             return Result.Failure<UserResponse>(UserErrors.NotFoundByEmail);
         }
 
-        return user.Id != userContext.UserId ? Result.Failure<UserResponse>(UserErrors.Unauthorized()) : user;
+        return user.Id != userContext.UserId ? Result.Failure<UserResponse>(UserErrors.Unauthorized) : user;
     }
 }

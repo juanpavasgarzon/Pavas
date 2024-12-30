@@ -6,7 +6,7 @@ namespace Web.Api.Extensions;
 
 public static class EndpointExtensions
 {
-    public static IServiceCollection AddEndpoints(this IServiceCollection services, Assembly assembly)
+    public static void AddEndpoints(this IServiceCollection services, Assembly assembly)
     {
         ServiceDescriptor[] serviceDescriptors = assembly.DefinedTypes
             .Where(type => type is { IsAbstract: false, IsInterface: false } && type.IsAssignableTo(typeof(IEndpoint)))
@@ -14,11 +14,9 @@ public static class EndpointExtensions
             .ToArray();
 
         services.TryAddEnumerable(serviceDescriptors);
-
-        return services;
     }
 
-    public static IApplicationBuilder MapEndpoints(this WebApplication app, RouteGroupBuilder? routeGroupBuilder = null)
+    public static void MapEndpoints(this WebApplication app, RouteGroupBuilder? routeGroupBuilder = null)
     {
         IEnumerable<IEndpoint> endpoints = app.Services.GetRequiredService<IEnumerable<IEndpoint>>();
 
@@ -28,8 +26,6 @@ public static class EndpointExtensions
         {
             endpoint.MapEndpoint(builder);
         }
-
-        return app;
     }
 
     public static RouteHandlerBuilder HasPermission(this RouteHandlerBuilder app, string permission)

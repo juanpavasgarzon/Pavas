@@ -9,16 +9,19 @@ using SharedKernel;
 namespace Infrastructure.BackgroundJobs;
 
 [DisallowConcurrentExecution]
-internal sealed class ProcessOutboxMessagesJob(
+public sealed class ProcessOutboxMessagesJob(
     ApplicationDbContext applicationDbContext,
     IPublisher publisher,
     IDateTimeProvider dateTimeProvider
 ) : IJob
 {
-    private readonly JsonSerializerSettings _settings = new() { TypeNameHandling = TypeNameHandling.All };
-
     public async Task Execute(IJobExecutionContext context)
     {
+        JsonSerializerSettings settings = new()
+        {
+            TypeNameHandling = TypeNameHandling.All
+        };
+
         List<OutboxMessage> outboxMessages = await applicationDbContext.OutboxMessages
             .Where(message => message.ProcessedOnUtc == null)
             .OrderBy(message => message.OccurredOnUtc)
@@ -27,7 +30,7 @@ internal sealed class ProcessOutboxMessagesJob(
 
         foreach (OutboxMessage outboxMessage in outboxMessages)
         {
-            IDomainEvent? domainEvent = JsonConvert.DeserializeObject<IDomainEvent>(outboxMessage.Content, _settings);
+            IDomainEvent? domainEvent = JsonConvert.DeserializeObject<IDomainEvent>(outboxMessage.Content, settings);
 
             if (domainEvent is null)
             {

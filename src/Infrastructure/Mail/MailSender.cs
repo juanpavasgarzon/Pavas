@@ -1,23 +1,27 @@
 using System.Net;
 using System.Net.Mail;
 using Application.Abstractions.Mail;
+using Infrastructure.Settings;
+using Microsoft.Extensions.Options;
 
 namespace Infrastructure.Mail;
 
-internal class MailSender : IMailSender
+internal class MailSender(IOptions<MailSettings> mailOptions) : IMailSender
 {
+    private readonly MailSettings _mailSettings = mailOptions.Value;
+
     public Task Send(MailSenderMessage payload, CancellationToken cancellationToken = default)
     {
-        var smtpClient = new SmtpClient("smtp.gmail.com")
+        var smtpClient = new SmtpClient(_mailSettings.Host)
         {
-            Port = 587,
-            Credentials = new NetworkCredential("garzonp2001@gmail.com", "fybc kdar yadh aszd"),
-            EnableSsl = true
+            Port = _mailSettings.Port,
+            Credentials = new NetworkCredential(_mailSettings.Username, _mailSettings.Password),
+            EnableSsl = _mailSettings.EnableSsl
         };
 
         var mailMessage = new MailMessage
         {
-            From = new MailAddress("garzonp2001@gmail.com"),
+            From = new MailAddress(_mailSettings.Username),
             Subject = payload.Subject,
             Body = payload.Message,
             IsBodyHtml = true

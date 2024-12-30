@@ -9,16 +9,19 @@ using Web.Api.Extensions;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-builder.Host.UseSerilog((context, loggerConfig) => loggerConfig.ReadFrom.Configuration(context.Configuration));
+var assembly = Assembly.GetExecutingAssembly();
 
-builder.Services.AddSwaggerGenWithAuth();
+builder.Host.AddSerilog();
 
-builder.Services
-    .AddApplication()
-    .AddPresentation()
-    .AddInfrastructure(builder.Configuration);
+builder.Services.AddOpenApi();
 
-builder.Services.AddEndpoints(Assembly.GetExecutingAssembly());
+builder.Services.AddPresentation();
+
+builder.Services.AddApplication();
+
+builder.Services.AddInfrastructure(builder.Configuration);
+
+builder.Services.AddEndpoints(assembly);
 
 WebApplication app = builder.Build();
 
@@ -26,6 +29,8 @@ app.MapEndpoints();
 
 if (app.Environment.IsDevelopment())
 {
+    app.MapOpenApi();
+
     app.UseSwaggerWithUi();
 
     app.ApplyMigrations();
@@ -45,8 +50,6 @@ app.UseExceptionHandler();
 app.UseAuthentication();
 
 app.UseAuthorization();
-
-app.MapControllers();
 
 await app.RunAsync();
 

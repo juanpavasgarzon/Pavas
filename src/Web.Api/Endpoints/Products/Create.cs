@@ -6,7 +6,7 @@ using Web.Api.Infrastructure;
 
 namespace Web.Api.Endpoints.Products;
 
-public class Create : IEndpoint
+internal sealed class Create : IEndpoint
 {
     private sealed record Request(
         string Code, 

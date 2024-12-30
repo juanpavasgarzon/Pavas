@@ -24,9 +24,13 @@ internal sealed class UserRegisteredDomainEventHandler(
 
         var message = new MailSenderMessage
         {
-            Subject = $"Hi {user.FirstName}, you has been registered",
-            Message = $"{user.FirstName} {user.LastName} Your account has been registered, your Id is '{notification.UserId}'",
-            Recipients = ["garzonp2001@gmail.com"]
+            Recipients = [user.Email],
+            Subject = $"Welcome, {user.FirstName}!",
+            Message = $"""
+                         Hello {user.FirstName} {user.LastName}, Your account has been successfully registered.
+                         Your User ID is: {notification.UserId}.
+                         Feel free to reach out if you have any questions.
+                       """
         };
 
         await mailSender.Send(message, cancellationToken);

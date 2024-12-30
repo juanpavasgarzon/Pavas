@@ -4,8 +4,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Infrastructure.Authorization;
 
-internal sealed class PermissionAuthorizationHandler(IServiceScopeFactory serviceScopeFactory)
-    : AuthorizationHandler<PermissionRequirement>
+internal sealed class PermissionAuthorizationHandler(
+    IServiceScopeFactory serviceScopeFactory
+) : AuthorizationHandler<PermissionRequirement>
 {
     protected override async Task HandleRequirementAsync(
         AuthorizationHandlerContext context,

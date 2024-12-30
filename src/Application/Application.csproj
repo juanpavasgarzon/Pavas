@@ -18,12 +18,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Customers\" />
     <Folder Include="Invoices\" />
     <Folder Include="Orders\" />
     <Folder Include="Purchases\" />
     <Folder Include="Quotations\" />
-    <Folder Include="Suppliers\" />
   </ItemGroup>
 
 </Project>
