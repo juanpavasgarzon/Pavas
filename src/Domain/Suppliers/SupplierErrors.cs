@@ -11,4 +11,13 @@ public static class SupplierErrors
     public static readonly Error IdNotUnique = Error.Conflict(
         "Supplier.IdNotUnique",
         "The provided id is not unique");
+
+    public static Error NotFound(string id) => Error.NotFound(
+        "Supplier.NotFound",
+        $"The supplier with the id = '{id}' was not found");
+    
+    public static Error CanNotDelete(string name) => Error.Problem(
+        "Supplier.CanNotDelete",
+        $"The supplier with the Name = '{name}' can't delete");
+
 }

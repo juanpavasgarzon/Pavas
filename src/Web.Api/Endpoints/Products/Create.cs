@@ -24,13 +24,11 @@ internal sealed class Create : IEndpoint
 
     private static async Task<IResult> Handle(Request request, ISender sender, CancellationToken cancellationToken)
     {
-        var command = new CreateProductCommand
-        {
-            Code = request.Code,
-            Name = request.Name,
-            Description = request.Description,
-            Price = request.Price
-        };
+        var command = new CreateProductCommand(
+            request.Code,
+            request.Name,
+            request.Description,
+            request.Price);
 
         Result<Guid> result = await sender.Send(command, cancellationToken);
 

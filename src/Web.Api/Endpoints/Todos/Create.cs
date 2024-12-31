@@ -26,14 +26,12 @@ internal sealed class Create : IEndpoint
 
     private static async Task<IResult> Handle(Request request, ISender sender, CancellationToken cancellationToken)
     {
-        var command = new CreateTodoCommand
-        {
-            UserId = request.UserId,
-            Description = request.Description,
-            DueDate = request.DueDate,
-            Labels = request.Labels,
-            Priority = (Priority)request.Priority
-        };
+        var command = new CreateTodoCommand(
+            request.UserId,
+            request.Description,
+            request.DueDate,
+            request.Labels,
+            (Priority)request.Priority);
 
         Result<Guid> result = await sender.Send(command, cancellationToken);
 

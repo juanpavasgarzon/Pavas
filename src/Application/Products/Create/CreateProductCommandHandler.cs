@@ -6,7 +6,7 @@ using SharedKernel;
 
 namespace Application.Products.Create;
 
-internal class CreateProductCommandHandler(
+internal sealed class CreateProductCommandHandler(
     IApplicationDbContext context,
     IDateTimeProvider dateTimeProvider
 ) : ICommandHandler<CreateProductCommand, Guid>

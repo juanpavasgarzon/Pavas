@@ -2,7 +2,7 @@ using FluentValidation;
 
 namespace Application.Suppliers.Create;
 
-public class CreateSupplierCommandValidator : AbstractValidator<CreateSupplierCommand>
+internal sealed class CreateSupplierCommandValidator : AbstractValidator<CreateSupplierCommand>
 {
     public CreateSupplierCommandValidator()
     {

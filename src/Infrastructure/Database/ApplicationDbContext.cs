@@ -10,6 +10,7 @@ using Domain.Suppliers;
 using Domain.Todos;
 using Domain.Users;
 using Microsoft.EntityFrameworkCore;
+using SharedKernel;
 
 namespace Infrastructure.Database;
 

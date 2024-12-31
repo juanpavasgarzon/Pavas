@@ -2,4 +2,4 @@ using Application.Abstractions.Messaging;
 
 namespace Application.Products.GetById;
 
-public record GetProductByIdQuery(Guid ProductId) : IQuery<ProductResponse>;
+public sealed record GetProductByIdQuery(Guid ProductId) : IQuery<ProductResponse>;

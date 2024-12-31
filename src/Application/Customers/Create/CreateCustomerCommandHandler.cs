@@ -6,7 +6,7 @@ using SharedKernel;
 
 namespace Application.Customers.Create;
 
-internal class CreateCustomerCommandHandler(
+internal sealed class CreateCustomerCommandHandler(
     IApplicationDbContext context,
     IDateTimeProvider dateTimeProvider
 ) : ICommandHandler<CreateCustomerCommand>

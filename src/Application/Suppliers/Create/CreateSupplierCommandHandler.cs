@@ -6,7 +6,7 @@ using SharedKernel;
 
 namespace Application.Suppliers.Create;
 
-public class CreateSupplierCommandHandler(
+internal sealed class CreateSupplierCommandHandler(
     IApplicationDbContext context,
     IDateTimeProvider dateTimeProvider
 ) : ICommandHandler<CreateSupplierCommand>

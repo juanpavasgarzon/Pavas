@@ -26,15 +26,13 @@ internal sealed class Create : IEndpoint
 
     private static async Task<IResult> Handle(Request request, ISender sender, CancellationToken cancellationToken)
     {
-        var command = new CreateSupplierCommand
-        {
-            Id = request.Id,
-            Name = request.Name,
-            Email = request.Email,
-            Phone = request.Phone,
-            Address = request.Address,
-            Notes = request.Notes,
-        };
+        var command = new CreateSupplierCommand(
+            request.Id,
+            request.Name,
+            request.Email,
+            request.Phone,
+            request.Address,
+            request.Notes);
 
         Result result = await sender.Send(command, cancellationToken);
 

@@ -6,7 +6,7 @@ using SharedKernel;
 
 namespace Application.Products.GetByCode;
 
-internal class GetProductByCodeQueryHandler(
+internal sealed class GetProductByCodeQueryHandler(
     IApplicationDbContext context
 ) : IQueryHandler<GetProductByCodeQuery, ProductResponse>
 {

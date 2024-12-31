@@ -1,6 +1,6 @@
 namespace Application.Products.GetById;
 
-public class ProductResponse
+public sealed class ProductResponse
 {
     public Guid Id { get; set; }
     public string Code { get; set; }
