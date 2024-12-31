@@ -9,9 +9,7 @@ using Domain.Quotations;
 using Domain.Suppliers;
 using Domain.Todos;
 using Domain.Users;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
-using SharedKernel;
 
 namespace Infrastructure.Database;
 

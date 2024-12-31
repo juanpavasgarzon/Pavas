@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Database.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241231052232_Customer")]
+    partial class Customer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -67,90 +70,6 @@ namespace Infrastructure.Database.Migrations
                         .HasDatabaseName("ix_customers_email");
 
                     b.ToTable("customers", "public");
-                });
-
-            modelBuilder.Entity("Domain.Invoices.Invoice", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasColumnName("id");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_at");
-
-                    b.Property<string>("Notes")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("notes");
-
-                    b.Property<Guid>("QuotationId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("quotation_id");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("integer")
-                        .HasColumnName("status");
-
-                    b.Property<decimal>("TotalAmount")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("numeric")
-                        .HasDefaultValue(0m)
-                        .HasColumnName("total_amount");
-
-                    b.HasKey("Id")
-                        .HasName("pk_invoices");
-
-                    b.HasIndex("QuotationId")
-                        .HasDatabaseName("ix_invoices_quotation_id");
-
-                    b.ToTable("invoices", "public");
-                });
-
-            modelBuilder.Entity("Domain.Orders.Order", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasColumnName("id");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_at");
-
-                    b.Property<string>("CustomerId")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("customer_id");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("description");
-
-                    b.Property<string>("Notes")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("notes");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("integer")
-                        .HasColumnName("status");
-
-                    b.Property<decimal>("TotalAmount")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("numeric")
-                        .HasDefaultValue(0m)
-                        .HasColumnName("total_amount");
-
-                    b.HasKey("Id")
-                        .HasName("pk_orders");
-
-                    b.HasIndex("CustomerId")
-                        .HasDatabaseName("ix_orders_customer_id");
-
-                    b.ToTable("orders", "public");
                 });
 
             modelBuilder.Entity("Domain.Outbox.OutboxMessage", b =>
@@ -236,90 +155,6 @@ namespace Infrastructure.Database.Migrations
                         .HasDatabaseName("ix_products_code");
 
                     b.ToTable("products", "public");
-                });
-
-            modelBuilder.Entity("Domain.Purchases.Purchase", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasColumnName("id");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_at");
-
-                    b.Property<string>("Notes")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("notes");
-
-                    b.Property<Guid>("OrderId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("order_id");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("integer")
-                        .HasColumnName("status");
-
-                    b.Property<decimal>("TotalAmount")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("numeric")
-                        .HasDefaultValue(0m)
-                        .HasColumnName("total_amount");
-
-                    b.HasKey("Id")
-                        .HasName("pk_purchases");
-
-                    b.HasIndex("OrderId")
-                        .HasDatabaseName("ix_purchases_order_id");
-
-                    b.ToTable("purchases", "public");
-                });
-
-            modelBuilder.Entity("Domain.Quotations.Quotation", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasColumnName("id");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_at");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("description");
-
-                    b.Property<string>("Notes")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("notes");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("integer")
-                        .HasColumnName("status");
-
-                    b.Property<string>("SupplierId")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("supplier_id");
-
-                    b.Property<decimal>("TotalAmount")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("numeric")
-                        .HasDefaultValue(0m)
-                        .HasColumnName("total_amount");
-
-                    b.HasKey("Id")
-                        .HasName("pk_quotations");
-
-                    b.HasIndex("SupplierId")
-                        .HasDatabaseName("ix_quotations_supplier_id");
-
-                    b.ToTable("quotations", "public");
                 });
 
             modelBuilder.Entity("Domain.Suppliers.Supplier", b =>
@@ -452,46 +287,6 @@ namespace Infrastructure.Database.Migrations
                         .HasDatabaseName("ix_users_email");
 
                     b.ToTable("users", "public");
-                });
-
-            modelBuilder.Entity("Domain.Invoices.Invoice", b =>
-                {
-                    b.HasOne("Domain.Quotations.Quotation", null)
-                        .WithMany()
-                        .HasForeignKey("QuotationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_invoices_quotations_quotation_id");
-                });
-
-            modelBuilder.Entity("Domain.Orders.Order", b =>
-                {
-                    b.HasOne("Domain.Customers.Customer", null)
-                        .WithMany()
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_orders_customers_customer_id");
-                });
-
-            modelBuilder.Entity("Domain.Purchases.Purchase", b =>
-                {
-                    b.HasOne("Domain.Orders.Order", null)
-                        .WithMany()
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_purchases_orders_order_id");
-                });
-
-            modelBuilder.Entity("Domain.Quotations.Quotation", b =>
-                {
-                    b.HasOne("Domain.Suppliers.Supplier", null)
-                        .WithMany()
-                        .HasForeignKey("SupplierId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_quotations_suppliers_supplier_id");
                 });
 
             modelBuilder.Entity("Domain.Todos.TodoItem", b =>

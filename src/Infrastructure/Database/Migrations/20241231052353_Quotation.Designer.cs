@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Database.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241231052353_Quotation")]
+    partial class Quotation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -67,45 +70,6 @@ namespace Infrastructure.Database.Migrations
                         .HasDatabaseName("ix_customers_email");
 
                     b.ToTable("customers", "public");
-                });
-
-            modelBuilder.Entity("Domain.Invoices.Invoice", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasColumnName("id");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_at");
-
-                    b.Property<string>("Notes")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("notes");
-
-                    b.Property<Guid>("QuotationId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("quotation_id");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("integer")
-                        .HasColumnName("status");
-
-                    b.Property<decimal>("TotalAmount")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("numeric")
-                        .HasDefaultValue(0m)
-                        .HasColumnName("total_amount");
-
-                    b.HasKey("Id")
-                        .HasName("pk_invoices");
-
-                    b.HasIndex("QuotationId")
-                        .HasDatabaseName("ix_invoices_quotation_id");
-
-                    b.ToTable("invoices", "public");
                 });
 
             modelBuilder.Entity("Domain.Orders.Order", b =>
@@ -452,16 +416,6 @@ namespace Infrastructure.Database.Migrations
                         .HasDatabaseName("ix_users_email");
 
                     b.ToTable("users", "public");
-                });
-
-            modelBuilder.Entity("Domain.Invoices.Invoice", b =>
-                {
-                    b.HasOne("Domain.Quotations.Quotation", null)
-                        .WithMany()
-                        .HasForeignKey("QuotationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_invoices_quotations_quotation_id");
                 });
 
             modelBuilder.Entity("Domain.Orders.Order", b =>

@@ -25,6 +25,5 @@ public interface IApplicationDbContext
     DbSet<Quotation> Quotations { get; }
     DbSet<Invoice> Invoices { get; }
 
-    DbSet<TEntity> Set<TEntity>() where TEntity : class;
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

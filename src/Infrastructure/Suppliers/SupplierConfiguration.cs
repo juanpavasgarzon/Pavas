@@ -10,6 +10,6 @@ public class SupplierConfiguration: IEntityTypeConfiguration<Supplier>
     {
         builder.HasKey(s => s.Id);
         
-        // builder.HasIndex(c => c.Email).IsUnique();
+        builder.HasIndex(c => c.Email).IsUnique();
     }
 }

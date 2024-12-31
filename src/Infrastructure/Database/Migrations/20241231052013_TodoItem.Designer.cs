@@ -13,8 +13,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Database.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241224184725_ProductMigration")]
-    partial class ProductMigration
+    [Migration("20241231052013_TodoItem")]
+    partial class TodoItem
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,48 +27,45 @@ namespace Infrastructure.Database.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Domain.Products.Product", b =>
+            modelBuilder.Entity("Domain.Outbox.OutboxMessage", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
-                    b.Property<string>("Code")
+                    b.Property<string>("Content")
                         .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("code");
+                        .HasColumnType("jsonb")
+                        .HasColumnName("content");
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<string>("Error")
+                        .HasColumnType("text")
+                        .HasColumnName("error");
+
+                    b.Property<DateTime>("OccurredOnUtc")
                         .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_at");
+                        .HasColumnName("occurred_on_utc");
 
-                    b.Property<string>("Description")
+                    b.Property<DateTime?>("ProcessedOnUtc")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("processed_on_utc");
+
+                    b.Property<string>("Type")
                         .IsRequired()
                         .HasColumnType("text")
-                        .HasColumnName("description");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("name");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("numeric")
-                        .HasColumnName("price");
-
-                    b.Property<int>("StockQuantity")
-                        .HasColumnType("integer")
-                        .HasColumnName("stock_quantity");
+                        .HasColumnName("type");
 
                     b.HasKey("Id")
-                        .HasName("pk_products");
+                        .HasName("pk_outbox_messages");
 
-                    b.HasIndex("Code")
-                        .IsUnique()
-                        .HasDatabaseName("ix_products_code");
+                    b.HasIndex("OccurredOnUtc", "ProcessedOnUtc")
+                        .HasDatabaseName("ix_outbox_messages_occurred_on_utc_processed_on_utc")
+                        .HasFilter("processed_on_utc IS NULL");
 
-                    b.ToTable("products", "public");
+                    NpgsqlIndexBuilderExtensions.IncludeProperties(b.HasIndex("OccurredOnUtc", "ProcessedOnUtc"), new[] { "Id", "Type", "Content" });
+
+                    b.ToTable("outbox_messages", "public");
                 });
 
             modelBuilder.Entity("Domain.Todos.TodoItem", b =>

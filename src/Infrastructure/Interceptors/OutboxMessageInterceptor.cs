@@ -1,7 +1,6 @@
 using Domain.Outbox;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using SharedKernel;
 

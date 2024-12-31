@@ -13,8 +13,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Database.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241226141918_OutboxMessageMigration")]
-    partial class OutboxMessageMigration
+    [Migration("20241231052416_Invoice")]
+    partial class Invoice
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -64,6 +64,10 @@ namespace Infrastructure.Database.Migrations
 
                     b.HasKey("Id")
                         .HasName("pk_customers");
+
+                    b.HasIndex("Email")
+                        .IsUnique()
+                        .HasDatabaseName("ix_customers_email");
 
                     b.ToTable("customers", "public");
                 });
@@ -150,6 +154,47 @@ namespace Infrastructure.Database.Migrations
                         .HasDatabaseName("ix_orders_customer_id");
 
                     b.ToTable("orders", "public");
+                });
+
+            modelBuilder.Entity("Domain.Outbox.OutboxMessage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("jsonb")
+                        .HasColumnName("content");
+
+                    b.Property<string>("Error")
+                        .HasColumnType("text")
+                        .HasColumnName("error");
+
+                    b.Property<DateTime>("OccurredOnUtc")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("occurred_on_utc");
+
+                    b.Property<DateTime?>("ProcessedOnUtc")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("processed_on_utc");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("type");
+
+                    b.HasKey("Id")
+                        .HasName("pk_outbox_messages");
+
+                    b.HasIndex("OccurredOnUtc", "ProcessedOnUtc")
+                        .HasDatabaseName("ix_outbox_messages_occurred_on_utc_processed_on_utc")
+                        .HasFilter("processed_on_utc IS NULL");
+
+                    NpgsqlIndexBuilderExtensions.IncludeProperties(b.HasIndex("OccurredOnUtc", "ProcessedOnUtc"), new[] { "Id", "Type", "Content" });
+
+                    b.ToTable("outbox_messages", "public");
                 });
 
             modelBuilder.Entity("Domain.Products.Product", b =>
@@ -318,6 +363,10 @@ namespace Infrastructure.Database.Migrations
                     b.HasKey("Id")
                         .HasName("pk_suppliers");
 
+                    b.HasIndex("Email")
+                        .IsUnique()
+                        .HasDatabaseName("ix_suppliers_email");
+
                     b.ToTable("suppliers", "public");
                 });
 
@@ -406,41 +455,6 @@ namespace Infrastructure.Database.Migrations
                         .HasDatabaseName("ix_users_email");
 
                     b.ToTable("users", "public");
-                });
-
-            modelBuilder.Entity("Domain.Outbox.OutboxMessage", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasColumnName("id");
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("content");
-
-                    b.Property<string>("Error")
-                        .HasColumnType("text")
-                        .HasColumnName("error");
-
-                    b.Property<DateTime>("OccurredOnUtc")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("occurred_on_utc");
-
-                    b.Property<DateTime?>("ProcessedOnUtc")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("processed_on_utc");
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("type");
-
-                    b.HasKey("Id")
-                        .HasName("pk_outbox_messages");
-
-                    b.ToTable("outbox_messages", "public");
                 });
 
             modelBuilder.Entity("Domain.Invoices.Invoice", b =>
