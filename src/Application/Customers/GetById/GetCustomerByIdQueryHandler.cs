@@ -26,6 +26,6 @@ public class GetCustomerByIdQueryHandler(
             })
             .SingleOrDefaultAsync(cancellationToken);
 
-        return customer ?? Result.Failure<CustomerResponse>(CustomerErrors.NotFound(query.CustomerId));
+        return customer ?? Result.Failure<CustomerResponse>(CustomerErrors.NotFound);
     }
 }

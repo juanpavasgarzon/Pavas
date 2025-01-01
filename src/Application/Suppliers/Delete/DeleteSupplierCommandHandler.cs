@@ -17,7 +17,7 @@ internal sealed class DeleteSupplierCommandHandler(
 
         if (supplier is null)
         {
-            return Result.Failure(SupplierErrors.NotFound(command.SupplierId));
+            return Result.Failure(SupplierErrors.NotFound);
         }
 
         try
@@ -30,7 +30,7 @@ internal sealed class DeleteSupplierCommandHandler(
         }
         catch (DbUpdateException)
         {
-            return Result.Failure(SupplierErrors.CanNotDelete(supplier.Name));
+            return Result.Failure(SupplierErrors.CanNotDelete);
         }
     }
 }

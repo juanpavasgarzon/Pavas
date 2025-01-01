@@ -29,6 +29,6 @@ internal sealed class GetTodoByIdQueryHandler(
             })
             .SingleOrDefaultAsync(cancellationToken);
 
-        return todo ?? Result.Failure<TodoResponse>(TodoItemErrors.NotFound(query.TodoItemId));
+        return todo ?? Result.Failure<TodoResponse>(TodoItemErrors.NotFound);
     }
 }

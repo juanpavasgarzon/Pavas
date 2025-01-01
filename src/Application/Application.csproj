@@ -18,10 +18,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Invoices\" />
-    <Folder Include="Orders\" />
-    <Folder Include="Purchases\" />
-    <Folder Include="Quotations\" />
+    <Folder Include="MeasurementUnits\Create\" />
+    <Folder Include="MeasurementUnits\Delete\" />
+    <Folder Include="MeasurementUnits\GetById\" />
+    <Folder Include="MeasurementUnits\GetBySymbol\" />
+    <Folder Include="MeasurementUnits\Get\" />
   </ItemGroup>
 
 </Project>

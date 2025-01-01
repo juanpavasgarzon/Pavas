@@ -1,29 +1,28 @@
 ﻿using Domain.Customers;
-using Domain.Invoices;
-using Domain.Orders;
+using Domain.MeasurementUnits;
 using Domain.Outbox;
 using Domain.Products;
-using Domain.Purchases;
 using Domain.Quotations;
 using Domain.Suppliers;
 using Domain.Todos;
 using Domain.Users;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace Application.Abstractions.Data;
 
-public interface IApplicationDbContext
+public interface IApplicationDbContext : IDisposable, IAsyncDisposable
 {
     DbSet<OutboxMessage> OutboxMessages { get; init; }
     DbSet<User> Users { get; }
     DbSet<TodoItem> TodoItems { get; }
+    DbSet<MeasurementUnit> MeasurementUnits { get; }
     DbSet<Product> Products { get; }
     DbSet<Supplier> Suppliers { get; }
     DbSet<Customer> Customers { get; }
-    DbSet<Order> Orders { get; }
-    DbSet<Purchase> Purchases { get; }
     DbSet<Quotation> Quotations { get; }
-    DbSet<Invoice> Invoices { get; }
+
+    DatabaseFacade Database { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

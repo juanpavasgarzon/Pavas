@@ -26,9 +26,9 @@ namespace Infrastructure;
 
 public static class DependencyInjection
 {
-    public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
+    public static void AddInfrastructure(this IServiceCollection services)
     {
-        services.AddDatabase(configuration);
+        services.AddDatabase();
 
         services.AddServices();
 
@@ -36,7 +36,7 @@ public static class DependencyInjection
 
         services.AddInterceptorsInternal();
 
-        services.AddHealthChecks(configuration);
+        services.AddHealths();
 
         services.AddAuthenticationInternal();
 
@@ -70,12 +70,14 @@ public static class DependencyInjection
         services.AddSingleton<OutboxMessageInterceptor>();
     }
 
-    private static void AddDatabase(this IServiceCollection services, IConfiguration configuration)
+    private static void AddDatabase(this IServiceCollection services)
     {
-        string? connectionString = configuration.GetConnectionString("Database");
-
         services.AddDbContext<ApplicationDbContext>((serviceProvider, options) =>
         {
+            IConfiguration configuration = serviceProvider.GetRequiredService<IConfiguration>();
+
+            string? connectionString = configuration.GetConnectionString("Database");
+
             OutboxMessageInterceptor outbox = serviceProvider.GetRequiredService<OutboxMessageInterceptor>();
 
             options.UseNpgsql(connectionString, ConfigureMigrations);
@@ -93,8 +95,12 @@ public static class DependencyInjection
         npgsqlOptions.MigrationsHistoryTable(HistoryRepository.DefaultTableName, Schemas.Default);
     }
 
-    private static void AddHealthChecks(this IServiceCollection services, IConfiguration configuration)
+    private static void AddHealths(this IServiceCollection services)
     {
+        using IServiceScope serviceScope = services.BuildServiceProvider().CreateScope();
+        
+        IConfiguration configuration = serviceScope.ServiceProvider.GetRequiredService<IConfiguration>();
+
         string? connectionString = configuration.GetConnectionString("Database");
 
         services.AddHealthChecks().AddNpgSql(connectionString!);

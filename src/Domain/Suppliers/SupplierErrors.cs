@@ -12,12 +12,12 @@ public static class SupplierErrors
         "Supplier.IdNotUnique",
         "The provided id is not unique");
 
-    public static Error NotFound(string id) => Error.NotFound(
+    public static readonly Error NotFound = Error.NotFound(
         "Supplier.NotFound",
-        $"The supplier with the id = '{id}' was not found");
+        "The provider supplier was not found");
     
-    public static Error CanNotDelete(string name) => Error.Problem(
+    public static readonly Error CanNotDelete = Error.Problem(
         "Supplier.CanNotDelete",
-        $"The supplier with the Name = '{name}' can't delete");
+        "The provider supplier can't delete");
 
 }

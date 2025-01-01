@@ -1,4 +1,3 @@
-using System.Reflection;
 using Application;
 using HealthChecks.UI.Client;
 using Infrastructure;
@@ -9,8 +8,6 @@ using Web.Api.Extensions;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-var assembly = Assembly.GetExecutingAssembly();
-
 builder.Host.AddSerilog();
 
 builder.Services.AddOpenApi();
@@ -19,9 +16,9 @@ builder.Services.AddPresentation();
 
 builder.Services.AddApplication();
 
-builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddInfrastructure();
 
-builder.Services.AddEndpoints(assembly);
+builder.Services.AddEndpoints();
 
 WebApplication app = builder.Build();
 

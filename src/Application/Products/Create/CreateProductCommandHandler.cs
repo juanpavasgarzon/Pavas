@@ -1,6 +1,8 @@
 using Application.Abstractions.Data;
 using Application.Abstractions.Messaging;
+using Domain.MeasurementUnits;
 using Domain.Products;
+using Domain.Suppliers;
 using Microsoft.EntityFrameworkCore;
 using SharedKernel;
 
@@ -18,13 +20,31 @@ internal sealed class CreateProductCommandHandler(
             return Result.Failure<Guid>(ProductErrors.CodeNotUnique);
         }
 
+        MeasurementUnit? measurementUnit = await context.MeasurementUnits
+            .SingleOrDefaultAsync(u => u.Id == command.MeasurementUnitId, cancellationToken);
+
+        if (measurementUnit is null)
+        {
+            return Result.Failure<Guid>(MeasurementUnitErrors.NotFound);
+        }
+
+        Supplier? supplier = await context.Suppliers
+            .SingleOrDefaultAsync(s => s.Id == command.SupplierId, cancellationToken);
+
+        if (supplier is null)
+        {
+            return Result.Failure<Guid>(SupplierErrors.NotFound);
+        }
+
         var product = new Product
         {
             Code = command.Code,
             Name = command.Name,
             Description = command.Description,
+            SupplierId = supplier.Id,
+            MeasurementUnitId = measurementUnit.Id,
             Price = command.Price,
-            StockQuantity = 0,
+            StockQuantity = decimal.Zero,
             CreatedAt = dateTimeProvider.UtcNow
         };
 

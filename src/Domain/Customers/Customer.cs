@@ -1,6 +1,8 @@
+using SharedKernel;
+
 namespace Domain.Customers;
 
-public class Customer
+public class Customer : Entity
 {
     public string Id { get; set; }
     public string Name { get; set; }

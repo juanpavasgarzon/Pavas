@@ -26,6 +26,6 @@ public sealed class GetSupplierByIdQueryHandler(
             })
             .SingleOrDefaultAsync(cancellationToken);
 
-        return supplier ?? Result.Failure<SupplierResponse>(SupplierErrors.NotFound(query.SupplierId));
+        return supplier ?? Result.Failure<SupplierResponse>(SupplierErrors.NotFound);
     }
 }

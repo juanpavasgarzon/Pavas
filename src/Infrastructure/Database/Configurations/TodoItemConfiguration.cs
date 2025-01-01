@@ -3,7 +3,7 @@ using Domain.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Infrastructure.Todos;
+namespace Infrastructure.Database.Configurations;
 
 internal sealed class TodoItemConfiguration : IEntityTypeConfiguration<TodoItem>
 {

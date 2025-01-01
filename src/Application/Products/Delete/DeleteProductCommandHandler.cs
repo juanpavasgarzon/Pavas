@@ -15,7 +15,7 @@ internal sealed class DeleteProductCommandHandler(IApplicationDbContext context)
 
         if (product is null)
         {
-            return Result.Failure(ProductErrors.NotFound(command.ProductId));
+            return Result.Failure(ProductErrors.NotFound);
         }
 
         try
@@ -28,7 +28,7 @@ internal sealed class DeleteProductCommandHandler(IApplicationDbContext context)
         }
         catch (DbUpdateException)
         {
-            return Result.Failure(ProductErrors.CanNotDelete(product.Code));
+            return Result.Failure(ProductErrors.CanNotDelete);
         }
     }
 }

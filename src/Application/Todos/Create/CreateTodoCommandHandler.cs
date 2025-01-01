@@ -16,17 +16,12 @@ internal sealed class CreateTodoCommandHandler(
 {
     public async Task<Result<Guid>> Handle(CreateTodoCommand command, CancellationToken cancellationToken)
     {
-        if (userContext.UserId != command.UserId)
-        {
-            return Result.Failure<Guid>(UserErrors.Unauthorized);
-        }
-
         User? user = await context.Users.AsNoTracking()
-            .SingleOrDefaultAsync(u => u.Id == command.UserId, cancellationToken);
+            .SingleOrDefaultAsync(u => u.Id == userContext.UserId, cancellationToken);
 
         if (user is null)
         {
-            return Result.Failure<Guid>(UserErrors.NotFound(command.UserId));
+            return Result.Failure<Guid>(UserErrors.NotFound);
         }
 
         var todoItem = new TodoItem

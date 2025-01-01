@@ -10,7 +10,6 @@ namespace Web.Api.Endpoints.Todos;
 internal sealed class Create : IEndpoint
 {
     private sealed record Request(
-        Guid UserId,
         string Description,
         int Priority,
         DateTime? DueDate,
@@ -27,7 +26,6 @@ internal sealed class Create : IEndpoint
     private static async Task<IResult> Handle(Request request, ISender sender, CancellationToken cancellationToken)
     {
         var command = new CreateTodoCommand(
-            request.UserId,
             request.Description,
             request.DueDate,
             request.Labels,

@@ -2,7 +2,7 @@ using Domain.Suppliers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Infrastructure.Suppliers;
+namespace Infrastructure.Database.Configurations;
 
 public class SupplierConfiguration: IEntityTypeConfiguration<Supplier>
 {

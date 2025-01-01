@@ -17,7 +17,7 @@ internal sealed class DeleteCustomerCommandHandler(
 
         if (customer is null)
         {
-            return Result.Failure(CustomerErrors.NotFound(command.CustomerId));
+            return Result.Failure(CustomerErrors.NotFound);
         }
 
         try
@@ -30,7 +30,7 @@ internal sealed class DeleteCustomerCommandHandler(
         }
         catch (DbUpdateException)
         {
-            return Result.Failure(CustomerErrors.CanNotDelete(customer.Name));
+            return Result.Failure(CustomerErrors.CanNotDelete);
         }
     }
 }

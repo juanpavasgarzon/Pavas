@@ -6,18 +6,17 @@ public static class CustomerErrors
 {
     public static readonly Error EmailNotUnique = Error.Conflict(
         "Customer.EmailNotUnique",
-        "The provided email is not unique");
-    
+        "The provided customer email is not unique");
+
     public static readonly Error IdNotUnique = Error.Conflict(
         "Customer.IdNotUnique",
-        "The provided id is not unique");
-    
-    public static Error NotFound(string id) => Error.NotFound(
-        "Customer.NotFound",
-        $"The customer with the id = '{id}' was not found");
-    
-    public static Error CanNotDelete(string name) => Error.Problem(
-        "Customer.CanNotDelete",
-        $"The customer with the Name = '{name}' can't delete");
+        "The provided customer id is not unique");
 
+    public static readonly Error NotFound = Error.NotFound(
+        "Customer.NotFound",
+        "The provider customer was not found");
+
+    public static readonly Error CanNotDelete = Error.Problem(
+        "Customer.CanNotDelete",
+        "The provider customer can't delete");
 }

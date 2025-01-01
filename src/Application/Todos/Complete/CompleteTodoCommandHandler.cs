@@ -20,12 +20,12 @@ internal sealed class CompleteTodoCommandHandler(
 
         if (todoItem is null)
         {
-            return Result.Failure(TodoItemErrors.NotFound(command.TodoItemId));
+            return Result.Failure(TodoItemErrors.NotFound);
         }
 
         if (todoItem.IsCompleted)
         {
-            return Result.Failure(TodoItemErrors.AlreadyCompleted(command.TodoItemId));
+            return Result.Failure(TodoItemErrors.AlreadyCompleted);
         }
 
         todoItem.IsCompleted = true;

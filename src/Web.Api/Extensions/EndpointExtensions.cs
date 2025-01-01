@@ -6,8 +6,10 @@ namespace Web.Api.Extensions;
 
 public static class EndpointExtensions
 {
-    public static void AddEndpoints(this IServiceCollection services, Assembly assembly)
+    public static void AddEndpoints(this IServiceCollection services)
     {
+        var assembly = Assembly.GetExecutingAssembly();
+        
         ServiceDescriptor[] serviceDescriptors = assembly.DefinedTypes
             .Where(type => type is { IsAbstract: false, IsInterface: false } && type.IsAssignableTo(typeof(IEndpoint)))
             .Select(type => ServiceDescriptor.Transient(typeof(IEndpoint), type))

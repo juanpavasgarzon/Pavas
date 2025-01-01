@@ -30,6 +30,6 @@ internal sealed class GetUserByIdQueryHandler(
             })
             .SingleOrDefaultAsync(cancellationToken);
 
-        return user ?? Result.Failure<UserResponse>(UserErrors.NotFound(query.UserId));
+        return user ?? Result.Failure<UserResponse>(UserErrors.NotFound);
     }
 }

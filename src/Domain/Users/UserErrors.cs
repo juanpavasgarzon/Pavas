@@ -4,9 +4,9 @@ namespace Domain.Users;
 
 public static class UserErrors
 {
-    public static Error NotFound(Guid userId) => Error.NotFound(
+    public static readonly Error NotFound = Error.NotFound(
         "Users.NotFound",
-        $"The user with the Id = '{userId}' was not found");
+        "The provided user was not found");
 
     public static readonly Error Unauthorized = Error.Failure(
         "Users.Unauthorized",

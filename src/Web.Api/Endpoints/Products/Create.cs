@@ -9,9 +9,11 @@ namespace Web.Api.Endpoints.Products;
 internal sealed class Create : IEndpoint
 {
     private sealed record Request(
-        string Code, 
+        string Code,
         string Name,
         string Description,
+        string SupplierId,
+        Guid MeasurementUnitId,
         decimal Price
     );
 
@@ -28,6 +30,8 @@ internal sealed class Create : IEndpoint
             request.Code,
             request.Name,
             request.Description,
+            request.SupplierId,
+            request.MeasurementUnitId,
             request.Price);
 
         Result<Guid> result = await sender.Send(command, cancellationToken);

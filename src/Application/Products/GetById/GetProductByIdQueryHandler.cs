@@ -27,6 +27,6 @@ internal sealed class GetProductByIdQueryHandler(
             })
             .SingleOrDefaultAsync(cancellationToken);
 
-        return product ?? Result.Failure<ProductResponse>(ProductErrors.NotFound(query.ProductId));
+        return product ?? Result.Failure<ProductResponse>(ProductErrors.NotFound);
     }
 }

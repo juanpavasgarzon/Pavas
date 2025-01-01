@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Infrastructure.Users;
+namespace Infrastructure.Database.Configurations;
 
 internal sealed class UserConfiguration : IEntityTypeConfiguration<User>
 {

@@ -1,6 +1,8 @@
+using SharedKernel;
+
 namespace Domain.Suppliers;
 
-public class Supplier
+public class Supplier : Entity
 {
     public string Id { get; set; }
     public string Name { get; set; }
