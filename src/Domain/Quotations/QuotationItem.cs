@@ -1,6 +1,8 @@
+using SharedKernel;
+
 namespace Domain.Quotations;
 
-public class QuotationItem
+public class QuotationItem : Entity
 {
     public int Id { get; set; }
     public Guid QuotationId { get; set; }

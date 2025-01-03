@@ -38,6 +38,7 @@ internal sealed class CreateProductCommandHandler(
 
         var product = new Product
         {
+            Id = Guid.NewGuid(),
             Code = command.Code,
             Name = command.Name,
             Description = command.Description,

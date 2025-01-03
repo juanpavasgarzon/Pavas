@@ -25,11 +25,6 @@
 
   <ItemGroup>
     <Folder Include="Endpoints\Invoices\" />
-    <Folder Include="Endpoints\MeasurementUnits\Create\" />
-    <Folder Include="Endpoints\MeasurementUnits\Delete\" />
-    <Folder Include="Endpoints\MeasurementUnits\GetById\" />
-    <Folder Include="Endpoints\MeasurementUnits\GetBySymbol\" />
-    <Folder Include="Endpoints\MeasurementUnits\Get\" />
     <Folder Include="Endpoints\Orders\" />
     <Folder Include="Endpoints\Purchases\" />
     <Folder Include="Endpoints\Quotations\" />

@@ -20,9 +20,7 @@ public interface IApplicationDbContext : IDisposable, IAsyncDisposable
     DbSet<Product> Products { get; }
     DbSet<Supplier> Suppliers { get; }
     DbSet<Customer> Customers { get; }
-    DbSet<Quotation> Quotations { get; }
 
     DatabaseFacade Database { get; }
-
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

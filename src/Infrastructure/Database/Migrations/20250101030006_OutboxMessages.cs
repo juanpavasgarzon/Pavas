@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Infrastructure.Database.Migrations
 {
     /// <inheritdoc />
-    public partial class OutboxMessage : Migration
+    public partial class OutboxMessages : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

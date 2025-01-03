@@ -6,32 +6,31 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Infrastructure.Database.Migrations
 {
     /// <inheritdoc />
-    public partial class User : Migration
+    public partial class MeasurementUnits : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "users",
+                name: "measurement_units",
                 schema: "public",
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
-                    email = table.Column<string>(type: "text", nullable: false),
-                    first_name = table.Column<string>(type: "text", nullable: false),
-                    last_name = table.Column<string>(type: "text", nullable: false),
-                    password_hash = table.Column<string>(type: "text", nullable: false)
+                    name = table.Column<string>(type: "text", nullable: false),
+                    symbol = table.Column<string>(type: "text", nullable: false),
+                    created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_users", x => x.id);
+                    table.PrimaryKey("pk_measurement_units", x => x.id);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "ix_users_email",
+                name: "ix_measurement_units_symbol",
                 schema: "public",
-                table: "users",
-                column: "email",
+                table: "measurement_units",
+                column: "symbol",
                 unique: true);
         }
 
@@ -39,7 +38,7 @@ namespace Infrastructure.Database.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "users",
+                name: "measurement_units",
                 schema: "public");
         }
     }

@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Infrastructure.Database.Migrations
 {
     /// <inheritdoc />
-    public partial class TodoItem : Migration
+    public partial class TodoItems : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

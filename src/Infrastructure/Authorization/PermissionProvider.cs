@@ -7,7 +7,7 @@ internal sealed class PermissionProvider(IApplicationDbContext applicationDbCont
     public async Task<HashSet<string>> GetForUserIdAsync(Guid userId)
     {
         await applicationDbContext.Users.FindAsync(userId);
-        HashSet<string> permissionsSet = [];
+        HashSet<string> permissionsSet = ["users:access"];
 
         return permissionsSet;
     }

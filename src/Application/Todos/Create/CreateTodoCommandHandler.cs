@@ -26,6 +26,7 @@ internal sealed class CreateTodoCommandHandler(
 
         var todoItem = new TodoItem
         {
+            Id = Guid.NewGuid(),
             UserId = user.Id,
             Description = command.Description,
             Priority = command.Priority,

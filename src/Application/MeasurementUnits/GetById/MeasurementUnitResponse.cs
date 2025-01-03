@@ -1,8 +1,6 @@
-using SharedKernel;
+namespace Application.MeasurementUnits.GetById;
 
-namespace Domain.MeasurementUnits;
-
-public class MeasurementUnit : Entity
+public sealed class MeasurementUnitResponse
 {
     public Guid Id { get; set; }
     public string Name { get; set; }

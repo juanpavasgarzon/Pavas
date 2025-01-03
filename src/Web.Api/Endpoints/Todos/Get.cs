@@ -15,11 +15,11 @@ internal sealed class Get : IEndpoint
             .RequireAuthorization();
     }
 
-    private static async Task<IResult> Handle(Guid userId, ISender sender, CancellationToken cancellationToken)
+    private static async Task<IResult> Handle(ISender sender, CancellationToken cancellationToken)
     {
-        var command = new GetTodosQuery(userId);
+        var query = new GetTodosQuery();
 
-        Result<List<TodoResponse>> result = await sender.Send(command, cancellationToken);
+        Result<List<TodoResponse>> result = await sender.Send(query, cancellationToken);
 
         return result.Match(Results.Ok, CustomResults.Problem);
     }

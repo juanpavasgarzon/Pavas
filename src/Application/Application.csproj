@@ -17,12 +17,4 @@
 	<InternalsVisibleTo Include="Application.UnitTests" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="MeasurementUnits\Create\" />
-    <Folder Include="MeasurementUnits\Delete\" />
-    <Folder Include="MeasurementUnits\GetById\" />
-    <Folder Include="MeasurementUnits\GetBySymbol\" />
-    <Folder Include="MeasurementUnits\Get\" />
-  </ItemGroup>
-
 </Project>
