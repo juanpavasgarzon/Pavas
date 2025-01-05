@@ -13,6 +13,7 @@ public class GetCustomersQueryHandler(
         CancellationToken cancellationToken)
     {
         List<CustomerResponse> customers = await context.Customers
+            .AsNoTracking()
             .Select(c => new CustomerResponse
             {
                 Id = c.Id,

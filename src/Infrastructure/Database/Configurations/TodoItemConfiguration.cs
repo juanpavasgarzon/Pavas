@@ -1,5 +1,4 @@
 ﻿using Domain.Todos;
-using Domain.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -14,6 +13,8 @@ internal sealed class TodoItemConfiguration : IEntityTypeConfiguration<TodoItem>
         builder.Property(t => t.DueDate)
             .HasConversion(d => d != null ? DateTime.SpecifyKind(d.Value, DateTimeKind.Utc) : d, v => v);
 
-        builder.HasOne<User>().WithMany().HasForeignKey(t => t.UserId);
+        builder.HasOne(t => t.User)
+            .WithMany(u => u.TodoItems)
+            .HasForeignKey(t => t.UserId);
     }
 }

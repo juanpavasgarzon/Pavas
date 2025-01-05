@@ -13,6 +13,7 @@ internal sealed class GetMeasurementUnitQueryHandler(
         CancellationToken cancellationToken)
     {
         List<MeasurementUnitResponse> measurementUnits = await context.MeasurementUnits
+            .AsNoTracking()
             .Select(measurementUnit => new MeasurementUnitResponse
             {
                 Id = measurementUnit.Id,

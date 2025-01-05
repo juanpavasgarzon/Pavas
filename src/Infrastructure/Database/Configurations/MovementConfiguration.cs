@@ -12,6 +12,9 @@ internal sealed class MovementConfiguration : IEntityTypeConfiguration<Movement>
 
         builder.HasIndex(m => m.Reference);
 
-        builder.HasMany<MovementProduct>().WithOne().HasForeignKey(mp => mp.MovementId).OnDelete(DeleteBehavior.Cascade);
+        builder.HasMany(m => m.MovementProducts)
+            .WithOne(mp => mp.Movement)
+            .HasForeignKey(mp => mp.MovementId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

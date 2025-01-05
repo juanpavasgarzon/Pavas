@@ -1,5 +1,4 @@
 using Domain.Movements;
-using Domain.Products;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -11,8 +10,13 @@ internal sealed class MovementProductConfiguration : IEntityTypeConfiguration<Mo
     {
         builder.HasKey(mp => new { mp.MovementId, mp.ProductId });
 
-        builder.HasOne<Product>().WithMany().HasForeignKey(mp => mp.ProductId);
+        builder.HasOne(mp => mp.Product)
+            .WithMany(p => p.MovementProducts)
+            .HasForeignKey(mp => mp.ProductId);
 
-        builder.HasOne<Movement>().WithMany().HasForeignKey(mp => mp.MovementId).OnDelete(DeleteBehavior.Cascade);
+        builder.HasOne(mp => mp.Movement)
+            .WithMany(m => m.MovementProducts)
+            .HasForeignKey(mp => mp.MovementId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

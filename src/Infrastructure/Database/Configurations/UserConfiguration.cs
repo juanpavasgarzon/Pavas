@@ -10,6 +10,11 @@ internal sealed class UserConfiguration : IEntityTypeConfiguration<User>
     {
         builder.HasKey(u => u.Id);
 
-        builder.HasIndex(u => u.Email).IsUnique();
+        builder.HasIndex(u => u.Email)
+            .IsUnique();
+
+        builder.HasMany(u => u.TodoItems)
+            .WithOne(t => t.User)
+            .HasForeignKey(t => t.UserId);
     }
 }

@@ -10,6 +10,7 @@ internal sealed class CustomerConfiguration : IEntityTypeConfiguration<Customer>
     {
         builder.HasKey(c => c.Id);
 
-        builder.HasIndex(c => c.Email).IsUnique();
+        builder.HasIndex(c => c.Email)
+            .IsUnique();
     }
 }

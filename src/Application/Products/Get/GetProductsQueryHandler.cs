@@ -12,6 +12,7 @@ internal sealed class GetProductsQueryHandler(
     public async Task<Result<List<ProductResponse>>> Handle(GetProductsQuery query, CancellationToken cancellationToken)
     {
         List<ProductResponse> products = await context.Products
+            .AsNoTracking()
             .Select(product => new ProductResponse
             {
                 Id = product.Id,

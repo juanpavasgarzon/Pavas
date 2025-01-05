@@ -13,6 +13,7 @@ public sealed class GetSupplierByIdQueryHandler(
     public async Task<Result<SupplierResponse>> Handle(GetSupplierByIdQuery query, CancellationToken cancellationToken)
     {
         SupplierResponse? supplier = await context.Suppliers
+            .AsNoTracking()
             .Where(s => s.Id == query.SupplierId)
             .Select(s => new SupplierResponse
             {

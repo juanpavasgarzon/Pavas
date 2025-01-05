@@ -13,6 +13,7 @@ public class GetCustomerByIdQueryHandler(
     public async Task<Result<CustomerResponse>> Handle(GetCustomerByIdQuery query, CancellationToken cancellationToken)
     {
         CustomerResponse? customer = await context.Customers
+            .AsNoTracking()
             .Where(c => c.Id == query.CustomerId)
             .Select(s => new CustomerResponse
             {

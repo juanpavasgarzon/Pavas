@@ -1,4 +1,5 @@
-﻿using SharedKernel;
+﻿using Domain.Todos;
+using SharedKernel;
 
 namespace Domain.Users;
 
@@ -9,4 +10,5 @@ public sealed class User : Entity
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public string PasswordHash { get; set; }
+    public ICollection<TodoItem> TodoItems { get; set; }
 }

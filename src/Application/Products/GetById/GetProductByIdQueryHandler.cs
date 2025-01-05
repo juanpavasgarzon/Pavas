@@ -14,6 +14,7 @@ internal sealed class GetProductByIdQueryHandler(
         CancellationToken cancellationToken)
     {
         ProductResponse? product = await context.Products
+            .AsNoTracking()
             .Where(p => p.Id == query.ProductId)
             .Select(product => new ProductResponse
             {

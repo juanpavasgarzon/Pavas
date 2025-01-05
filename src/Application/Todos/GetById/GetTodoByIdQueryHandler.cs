@@ -15,6 +15,7 @@ internal sealed class GetTodoByIdQueryHandler(
     public async Task<Result<TodoResponse>> Handle(GetTodoByIdQuery query, CancellationToken cancellationToken)
     {
         TodoResponse? todo = await context.TodoItems
+            .AsNoTracking()
             .Where(todoItem => todoItem.Id == query.TodoItemId && todoItem.UserId == userContext.UserId)
             .Select(todoItem => new TodoResponse
             {

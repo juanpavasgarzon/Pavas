@@ -14,6 +14,7 @@ internal sealed class GetMeasurementUnitByIdQueryHandler(
         CancellationToken cancellationToken)
     {
         MeasurementUnitResponse? measurementUnit = await context.MeasurementUnits
+            .AsNoTracking()
             .Where(m => m.Id == query.MeasurementUnitId)
             .Select(measurementUnit => new MeasurementUnitResponse
             {

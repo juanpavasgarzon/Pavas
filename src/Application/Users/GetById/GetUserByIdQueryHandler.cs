@@ -20,6 +20,7 @@ internal sealed class GetUserByIdQueryHandler(
         }
 
         UserResponse? user = await context.Users
+            .AsNoTracking()
             .Where(u => u.Id == query.UserId)
             .Select(u => new UserResponse
             {

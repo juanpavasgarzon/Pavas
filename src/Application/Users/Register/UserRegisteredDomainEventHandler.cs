@@ -1,7 +1,7 @@
 ﻿using Application.Abstractions.Data;
 using Application.Abstractions.Mail;
+using Application.Abstractions.Messaging;
 using Domain.Users;
-using MediatR;
 using Microsoft.Extensions.Logging;
 
 namespace Application.Users.Register;
@@ -10,7 +10,7 @@ internal sealed class UserRegisteredDomainEventHandler(
     IMailSender mailSender,
     IApplicationDbContext context,
     ILogger<UserRegisteredDomainEventHandler> logger
-) : INotificationHandler<UserRegisteredDomainEvent>
+) : IDomainEventHandler<UserRegisteredDomainEvent>
 {
     public async Task Handle(UserRegisteredDomainEvent notification, CancellationToken cancellationToken)
     {

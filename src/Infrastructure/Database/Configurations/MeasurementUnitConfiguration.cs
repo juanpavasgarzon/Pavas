@@ -10,6 +10,11 @@ internal sealed class MeasurementUnitConfiguration : IEntityTypeConfiguration<Me
     {
         builder.HasKey(m => m.Id);
 
-        builder.HasIndex(m => m.Symbol).IsUnique();
+        builder.HasIndex(m => m.Symbol)
+            .IsUnique();
+
+        builder.HasMany(m => m.Products)
+            .WithOne(p => p.MeasurementUnit)
+            .HasForeignKey(p => p.MeasurementUnitId);
     }
 }

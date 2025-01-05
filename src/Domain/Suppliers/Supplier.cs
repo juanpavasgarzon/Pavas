@@ -1,3 +1,4 @@
+using Domain.Products;
 using SharedKernel;
 
 namespace Domain.Suppliers;
@@ -11,4 +12,5 @@ public class Supplier : Entity
     public string Address { get; set; }
     public string Notes { get; set; }
     public DateTime CreatedAt { get; set; }
+    public ICollection<Product> Products { get; set; }
 }

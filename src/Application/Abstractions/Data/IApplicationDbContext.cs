@@ -21,6 +21,7 @@ public interface IApplicationDbContext : IDisposable, IAsyncDisposable
     DbSet<Supplier> Suppliers { get; }
     DbSet<Customer> Customers { get; }
     DbSet<Movement> Movements { get; init; }
+    DbSet<MovementProduct> MovementProducts { get; init; }
 
     DatabaseFacade GetDatabase();
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);

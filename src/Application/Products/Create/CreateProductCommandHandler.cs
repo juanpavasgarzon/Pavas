@@ -20,7 +20,7 @@ internal sealed class CreateProductCommandHandler(
             return Result.Failure<Guid>(ProductErrors.CodeNotUnique);
         }
 
-        MeasurementUnit? measurementUnit = await context.MeasurementUnits
+        MeasurementUnit? measurementUnit = await context.MeasurementUnits.AsNoTracking()
             .SingleOrDefaultAsync(u => u.Id == command.MeasurementUnitId, cancellationToken);
 
         if (measurementUnit is null)
@@ -28,7 +28,7 @@ internal sealed class CreateProductCommandHandler(
             return Result.Failure<Guid>(MeasurementUnitErrors.NotFound);
         }
 
-        Supplier? supplier = await context.Suppliers
+        Supplier? supplier = await context.Suppliers.AsNoTracking()
             .SingleOrDefaultAsync(s => s.Id == command.SupplierId, cancellationToken);
 
         if (supplier is null)

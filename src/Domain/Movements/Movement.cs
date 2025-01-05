@@ -11,4 +11,5 @@ public sealed class Movement : Entity
     public DateTime CreatedAt { get; set; }
     public bool IsCompleted { get; set; }
     public DateTime? CompletedAt { get; set; }
+    public ICollection<MovementProduct> MovementProducts { get; set; }
 }

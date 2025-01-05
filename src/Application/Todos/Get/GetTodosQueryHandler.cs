@@ -12,6 +12,7 @@ internal sealed class GetTodosQueryHandler(
     public async Task<Result<List<TodoResponse>>> Handle(GetTodosQuery query, CancellationToken cancellationToken)
     {
         List<TodoResponse> todos = await context.TodoItems
+            .AsNoTracking()
             .Select(todoItem => new TodoResponse
             {
                 Id = todoItem.Id,

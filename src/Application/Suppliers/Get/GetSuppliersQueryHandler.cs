@@ -13,6 +13,7 @@ internal sealed class GetSuppliersQueryHandler(
         CancellationToken cancellationToken)
     {
         List<SupplierResponse> suppliers = await context.Suppliers
+            .AsNoTracking()
             .Select(s => new SupplierResponse
             {
                 Id = s.Id,

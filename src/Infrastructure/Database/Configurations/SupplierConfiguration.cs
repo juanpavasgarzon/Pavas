@@ -10,6 +10,11 @@ internal sealed class SupplierConfiguration: IEntityTypeConfiguration<Supplier>
     {
         builder.HasKey(s => s.Id);
         
-        builder.HasIndex(c => c.Email).IsUnique();
+        builder.HasIndex(s => s.Email)
+            .IsUnique();
+
+        builder.HasMany(s => s.Products)
+            .WithOne(p => p.Supplier)
+            .HasForeignKey(p => p.SupplierId);
     }
 }
