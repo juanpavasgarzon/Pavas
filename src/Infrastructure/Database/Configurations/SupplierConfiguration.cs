@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Database.Configurations;
 
-public class SupplierConfiguration: IEntityTypeConfiguration<Supplier>
+internal sealed class SupplierConfiguration: IEntityTypeConfiguration<Supplier>
 {
     public void Configure(EntityTypeBuilder<Supplier> builder)
     {

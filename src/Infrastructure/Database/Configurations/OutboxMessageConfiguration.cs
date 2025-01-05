@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Database.Configurations;
 
-public class OutboxMessageConfiguration : IEntityTypeConfiguration<OutboxMessage>
+internal sealed class OutboxMessageConfiguration : IEntityTypeConfiguration<OutboxMessage>
 {
     public void Configure(EntityTypeBuilder<OutboxMessage> builder)
     {

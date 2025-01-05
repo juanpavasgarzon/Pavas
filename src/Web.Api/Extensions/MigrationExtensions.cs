@@ -11,6 +11,6 @@ public static class MigrationExtensions
 
         using IApplicationDbContext dbContext = scope.ServiceProvider.GetRequiredService<IApplicationDbContext>();
 
-        dbContext.Database.Migrate();
+        dbContext.GetDatabase().Migrate();
     }
 }

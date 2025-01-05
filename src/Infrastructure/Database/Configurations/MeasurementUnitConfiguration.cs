@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Database.Configurations;
 
-public class MeasurementUnitConfiguration : IEntityTypeConfiguration<MeasurementUnit>
+internal sealed class MeasurementUnitConfiguration : IEntityTypeConfiguration<MeasurementUnit>
 {
     public void Configure(EntityTypeBuilder<MeasurementUnit> builder)
     {

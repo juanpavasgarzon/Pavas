@@ -17,4 +17,8 @@
 	<InternalsVisibleTo Include="Application.UnitTests" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Movements\" />
+  </ItemGroup>
+
 </Project>

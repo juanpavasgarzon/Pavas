@@ -1,8 +1,8 @@
 ﻿using Domain.Customers;
 using Domain.MeasurementUnits;
+using Domain.Movements;
 using Domain.Outbox;
 using Domain.Products;
-using Domain.Quotations;
 using Domain.Suppliers;
 using Domain.Todos;
 using Domain.Users;
@@ -20,7 +20,8 @@ public interface IApplicationDbContext : IDisposable, IAsyncDisposable
     DbSet<Product> Products { get; }
     DbSet<Supplier> Suppliers { get; }
     DbSet<Customer> Customers { get; }
+    DbSet<Movement> Movements { get; init; }
 
-    DatabaseFacade Database { get; }
+    DatabaseFacade GetDatabase();
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }
