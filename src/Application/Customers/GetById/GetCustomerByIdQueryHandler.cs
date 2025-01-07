@@ -6,7 +6,7 @@ using SharedKernel;
 
 namespace Application.Customers.GetById;
 
-public class GetCustomerByIdQueryHandler(
+internal sealed class GetCustomerByIdQueryHandler(
     IApplicationDbContext context
 ) : IQueryHandler<GetCustomerByIdQuery, CustomerResponse>
 {

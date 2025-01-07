@@ -5,7 +5,7 @@ using SharedKernel;
 
 namespace Application.Movements.Create;
 
-public sealed class CreateMovementCommandHandler(
+internal sealed class CreateMovementCommandHandler(
     IApplicationDbContext context,
     IDateTimeProvider dateTimeProvider
 ) : ICommandHandler<CreateMovementCommand, Guid>
@@ -16,12 +16,12 @@ public sealed class CreateMovementCommandHandler(
         {
             Id = Guid.NewGuid(),
             Reference = command.Reference,
-            Type = command.Type,
+            Type = Enum.Parse<MovementType>(command.Type),
             Notes = command.Notes,
             CreatedAt = dateTimeProvider.UtcNow,
             IsCompleted = false
         };
-        
+
         context.Movements.Add(movement);
 
         await context.SaveChangesAsync(cancellationToken);

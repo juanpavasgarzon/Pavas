@@ -10,7 +10,7 @@ internal sealed class GetBySymbol : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapGet("measurement-unit/symbol/{symbol}", Handle)
+        app.MapGet("measurement-unit/{symbol}", Handle)
             .WithTags(Tags.MeasurementUnit)
             .RequireAuthorization();
     }

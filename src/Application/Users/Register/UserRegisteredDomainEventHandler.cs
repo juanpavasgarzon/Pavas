@@ -14,7 +14,7 @@ internal sealed class UserRegisteredDomainEventHandler(
 {
     public async Task Handle(UserRegisteredDomainEvent notification, CancellationToken cancellationToken)
     {
-        User? user = await context.Users.FindAsync([notification.UserId], cancellationToken: cancellationToken);
+        User? user = await context.Users.FindAsync([notification.UserId], cancellationToken);
 
         if (user is null)
         {

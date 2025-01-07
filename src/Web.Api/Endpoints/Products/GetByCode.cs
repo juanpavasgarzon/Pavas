@@ -10,7 +10,7 @@ internal sealed class GetByCode : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapGet("products/code/{code}", Handle)
+        app.MapGet("products/{code}", Handle)
             .WithTags(Tags.Products)
             .RequireAuthorization();
     }

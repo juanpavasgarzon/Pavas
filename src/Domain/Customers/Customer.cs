@@ -2,7 +2,7 @@ using SharedKernel;
 
 namespace Domain.Customers;
 
-public class Customer : Entity
+public sealed class Customer : Entity
 {
     public string Id { get; set; }
     public string Name { get; set; }

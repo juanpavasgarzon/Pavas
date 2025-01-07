@@ -2,12 +2,19 @@
 
 namespace Application.Todos.Create;
 
-public class CreateTodoCommandValidator : AbstractValidator<CreateTodoCommand>
+internal sealed class CreateTodoCommandValidator : AbstractValidator<CreateTodoCommand>
 {
     public CreateTodoCommandValidator()
     {
-        RuleFor(c => c.Priority).IsInEnum();
-        RuleFor(c => c.Description).NotEmpty().MaximumLength(255);
-        RuleFor(c => c.DueDate).GreaterThanOrEqualTo(DateTime.Today).When(x => x.DueDate.HasValue);
+        RuleFor(c => c.Priority)
+            .IsInEnum();
+        
+        RuleFor(c => c.Description)
+            .NotEmpty()
+            .MaximumLength(255);
+        
+        RuleFor(c => c.DueDate)
+            .GreaterThanOrEqualTo(DateTime.Today)
+            .When(x => x.DueDate.HasValue);
     }
 }

@@ -21,6 +21,11 @@ internal sealed class CompleteMovementCommandHandler(
             return Result.Failure(MovementErrors.NotFound);
         }
 
+        if (!await context.MovementProducts.AnyAsync(mp => mp.MovementId == movement.Id, cancellationToken))
+        {
+            return Result.Failure(MovementErrors.CannotComplete);
+        }
+
         if (movement.IsCompleted)
         {
             return Result.Failure(MovementErrors.AlreadyCompleted);
@@ -28,7 +33,9 @@ internal sealed class CompleteMovementCommandHandler(
 
         movement.IsCompleted = true;
         movement.CompletedAt = dateTimeProvider.UtcNow;
-        
+
+        movement.Raise(new MovementCompletedDomainEvent(movement.Id));
+
         await context.SaveChangesAsync(cancellationToken);
 
         return Result.Success();

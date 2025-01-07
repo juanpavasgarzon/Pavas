@@ -6,6 +6,7 @@ internal sealed class DeleteMeasurementUnitCommandValidator : AbstractValidator<
 {
     public DeleteMeasurementUnitCommandValidator()
     {
-        RuleFor(c => c.MeasurementUnitId).NotEmpty();
+        RuleFor(c => c.MeasurementUnitId)
+            .NotEmpty();
     }
 }

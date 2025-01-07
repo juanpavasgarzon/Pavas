@@ -6,10 +6,20 @@ internal sealed class CreateProductCommandValidator : AbstractValidator<CreatePr
 {
     public CreateProductCommandValidator()
     {
-        RuleFor(c => c.Code).NotEmpty();
-        RuleFor(c => c.Name).NotEmpty();
-        RuleFor(c => c.SupplierId).NotEmpty();
-        RuleFor(c => c.MeasurementUnitId).NotEmpty();
-        RuleFor(c => c.Price).NotEmpty().GreaterThan(decimal.Zero);
+        RuleFor(c => c.Code)
+            .NotEmpty();
+
+        RuleFor(c => c.Name)
+            .NotEmpty();
+
+        RuleFor(c => c.SupplierId)
+            .NotEmpty();
+
+        RuleFor(c => c.MeasurementUnitId)
+            .NotEmpty();
+
+        RuleFor(c => c.Price)
+            .NotEmpty()
+            .GreaterThan(decimal.Zero);
     }
 }

@@ -6,6 +6,7 @@ internal sealed class CompleteMovementCommandValidator : AbstractValidator<Compl
 {
     public CompleteMovementCommandValidator()
     {
-        RuleFor(c => c.MovementId).NotEmpty();
+        RuleFor(c => c.MovementId)
+            .NotEmpty();
     }
 }

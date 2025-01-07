@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Infrastructure.Settings;
 
-public class JwtSettings
+public sealed class JwtSettings
 {
     public const string Path = "Jwt";
 

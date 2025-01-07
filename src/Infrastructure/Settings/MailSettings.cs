@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Infrastructure.Settings;
 
-public class MailSettings
+public sealed class MailSettings
 {
     public const string Path = "Mail";
 

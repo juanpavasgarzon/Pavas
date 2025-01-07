@@ -1,6 +1,7 @@
 using Application.Abstractions.Data;
 using Application.Abstractions.Messaging;
 using Domain.Movements;
+using Domain.Products;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
@@ -17,7 +18,6 @@ internal sealed class MovementCompletedDomainEventHandler(
         Movement? movement = await context.Movements
             .Include(m => m.MovementProducts)
             .ThenInclude(mp => mp.Product)
-            .AsNoTracking()
             .Where(m => m.Id == notification.MovementId)
             .SingleOrDefaultAsync(cancellationToken);
 
@@ -34,7 +34,7 @@ internal sealed class MovementCompletedDomainEventHandler(
         {
             foreach (MovementProduct movementProduct in movement.MovementProducts)
             {
-                movementProduct.Product.StockQuantity += movementProduct.Quantity;
+                HandleStock(movementProduct.Product, movement.Type, movementProduct.Quantity);
             }
 
             await context.SaveChangesAsync(cancellationToken);
@@ -45,6 +45,23 @@ internal sealed class MovementCompletedDomainEventHandler(
         {
             await transaction.RollbackAsync(cancellationToken);
             logger.LogError(exception, "Error processing movement {MovementId}.", notification.MovementId);
+        }
+    }
+
+    private static void HandleStock(Product product, MovementType movementType, decimal quantity)
+    {
+        switch (movementType)
+        {
+            case MovementType.In:
+                product.StockQuantity += quantity;
+                break;
+            case MovementType.Out:
+                product.StockQuantity -= quantity;
+                break;
+            case MovementType.Transfer:
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(movementType.ToString(), "Invalid movement");
         }
     }
 }

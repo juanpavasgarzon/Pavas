@@ -6,6 +6,7 @@ internal sealed class DeleteSupplierCommandValidator : AbstractValidator<DeleteS
 {
     public DeleteSupplierCommandValidator()
     {
-        RuleFor(c => c.SupplierId).NotEmpty();
+        RuleFor(c => c.SupplierId)
+            .NotEmpty();
     }
 }

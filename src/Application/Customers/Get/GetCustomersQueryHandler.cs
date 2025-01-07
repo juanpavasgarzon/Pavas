@@ -5,7 +5,7 @@ using SharedKernel;
 
 namespace Application.Customers.Get;
 
-public class GetCustomersQueryHandler(
+internal sealed class GetCustomersQueryHandler(
     IApplicationDbContext context
 ) : IQueryHandler<GetCustomersQuery, List<CustomerResponse>>
 {

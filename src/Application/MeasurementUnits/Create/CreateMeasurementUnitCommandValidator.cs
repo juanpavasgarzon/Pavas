@@ -6,7 +6,11 @@ internal sealed class CreateMeasurementUnitCommandValidator : AbstractValidator<
 {
     public CreateMeasurementUnitCommandValidator()
     {
-        RuleFor(c => c.Name).NotEmpty();
-        RuleFor(c => c.Symbol).NotEmpty().MaximumLength(2);
+        RuleFor(c => c.Name)
+            .NotEmpty();
+
+        RuleFor(c => c.Symbol)
+            .NotEmpty()
+            .MaximumLength(2);
     }
 }

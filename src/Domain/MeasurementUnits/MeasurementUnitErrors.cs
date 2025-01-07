@@ -6,7 +6,7 @@ public static class MeasurementUnitErrors
 {
     public static readonly Error NotFound = Error.NotFound(
         "MeasurementUnit.NotFound",
-        "The provided Id was not found");
+        "The provided measurement was not found");
 
     public static readonly Error CanNotDelete = Error.Problem(
         "MeasurementUnit.CanNotDelete",
@@ -14,5 +14,5 @@ public static class MeasurementUnitErrors
 
     public static readonly Error SymbolNotUnique = Error.Conflict(
         "MeasurementUnit.CodeNotUnique",
-        "The provided product symbol is not unique");
+        "The provided measurement symbol is not unique");
 }

@@ -3,7 +3,7 @@ using SharedKernel;
 
 namespace Domain.Suppliers;
 
-public class Supplier : Entity
+public sealed class Supplier : Entity
 {
     public string Id { get; set; }
     public string Name { get; set; }
