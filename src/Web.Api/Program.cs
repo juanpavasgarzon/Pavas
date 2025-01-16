@@ -22,6 +22,8 @@ builder.Services.AddEndpoints();
 
 WebApplication app = builder.Build();
 
+app.UseCors("AllowSpecificOrigin");
+
 app.MapEndpoints();
 
 if (app.Environment.IsDevelopment())

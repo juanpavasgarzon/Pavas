@@ -59,7 +59,7 @@ public static class DependencyInjection
             configurator.AddJob<ProcessOutboxMessagesJob>(outboxJobKey);
 
             configurator.AddTrigger(trigger => trigger.ForJob(outboxJobKey)
-                .WithSimpleSchedule(schedule => schedule.WithIntervalInSeconds(10).RepeatForever()));
+                .WithSimpleSchedule(schedule => schedule.WithIntervalInSeconds(5).RepeatForever()));
         });
 
         services.AddQuartzHostedService();

@@ -17,6 +17,8 @@ public static class DependencyInjection
         services.AddProblemDetails();
 
         services.AddSettings();
+
+        services.AddSpecificOriginCors();
     }
 
     private static void AddSettings(this IServiceCollection services)
@@ -30,5 +32,19 @@ public static class DependencyInjection
             .BindConfiguration(MailSettings.Path)
             .ValidateDataAnnotations()
             .ValidateOnStart();
+    }
+
+    private static void AddSpecificOriginCors(this IServiceCollection services)
+    {
+        services.AddCors(options =>
+        {
+            options.AddPolicy("AllowSpecificOrigin", policy =>
+            {
+                policy.WithOrigins("http://localhost:5173")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials();
+            });
+        });
     }
 }

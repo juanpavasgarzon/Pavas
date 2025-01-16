@@ -19,5 +19,10 @@ internal sealed class RegisterUserCommandValidator : AbstractValidator<RegisterU
         RuleFor(c => c.Password)
             .NotEmpty()
             .MinimumLength(8);
+        
+        RuleFor(c => c.ConfirmPassword)
+            .NotEmpty()
+            .Equal(c => c.Password)
+            .MinimumLength(8);
     }
 }
